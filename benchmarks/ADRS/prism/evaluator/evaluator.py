@@ -195,3 +195,12 @@ def evaluate(program_path):
                 "combined_score": 0.0,
                 "error": str(e)
             }
+
+
+if __name__ == "__main__":
+    # Backwards-compat: bridges old evaluate() -> dict to the container JSON
+    # protocol.  wrapper.py is auto-injected at build time from
+    # skydiscover/evaluation/wrapper.py.
+    from wrapper import run
+
+    run(evaluate)

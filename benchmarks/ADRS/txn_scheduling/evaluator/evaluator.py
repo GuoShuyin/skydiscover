@@ -249,15 +249,10 @@ def evaluate_stage2(program_path):
     return evaluate(program_path)
 
 
-def main():
-    import argparse
-    import json
-    parser = argparse.ArgumentParser(description="Evaluate a scheduling program.")
-    parser.add_argument("program_path", help="Path to the program file to evaluate.")
-    args = parser.parse_args()
-
-    results = evaluate(args.program_path)
-    print(json.dumps(results, indent=2))
-
 if __name__ == "__main__":
-    main()
+    # Backwards-compat: bridges old evaluate() -> dict to the container JSON
+    # protocol.  wrapper.py is auto-injected at build time from
+    # skydiscover/evaluation/wrapper.py.
+    from wrapper import run
+
+    run(evaluate)

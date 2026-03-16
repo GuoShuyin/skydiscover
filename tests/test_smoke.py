@@ -123,7 +123,7 @@ class TestSmokePipeline:
         # Assertions
         assert isinstance(result, DiscoveryResult)
         assert result.best_score >= 0.8  # mock LLM produces `def solve` → scored 0.8
-        assert result.best_solution  # non-empty string
+        assert "def solve" in result.best_solution
         assert os.path.isdir(output_dir)
 
 
@@ -136,6 +136,15 @@ class TestBugFixGuards:
         cfgs = [
             LLMModelConfig(name="m1", weight=0.0, api_key="k", api_base="http://x"),
             LLMModelConfig(name="m2", weight=0.0, api_key="k", api_base="http://x"),
+        ]
+        with pytest.raises(ValueError, match="weights"):
+            LLMPool(cfgs)
+
+    def test_llm_pool_raises_on_negative_weight(self):
+        """LLMPool must raise ValueError when any model weight is negative."""
+        cfgs = [
+            LLMModelConfig(name="m1", weight=-1.0, api_key="k", api_base="http://x"),
+            LLMModelConfig(name="m2", weight=2.0, api_key="k", api_base="http://x"),
         ]
         with pytest.raises(ValueError, match="weights"):
             LLMPool(cfgs)

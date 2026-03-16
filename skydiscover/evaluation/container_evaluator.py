@@ -92,6 +92,7 @@ class ContainerizedEvaluator:
                     ["docker", "stop", cid],
                     capture_output=True,
                     timeout=30,
+                    check=True,
                 )
             except subprocess.TimeoutExpired:
                 logger.warning(f"Timed out stopping container {cid[:12]}, killing...")

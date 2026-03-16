@@ -191,6 +191,10 @@ class Evaluator:
             args_list=list(programs),
         )
 
+    def close(self) -> None:
+        """Remove the dynamically loaded evaluation module from sys.modules."""
+        sys.modules.pop(getattr(self, "_module_name", None), None)
+
     # ------------------------------------------------------------------
     # Internals
     # ------------------------------------------------------------------

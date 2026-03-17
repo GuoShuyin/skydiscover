@@ -111,7 +111,7 @@ class ClaudeCodeController(DiscoveryController):
                 "CID=$(cat /workspace/.evaluator-container-id)\n"
                 "CANDIDATE=\"/tmp/candidate_$$.${EXT}\"\n"
                 "docker exec -i \"$CID\" tee \"$CANDIDATE\" < \"$PROGRAM_PATH\" > /dev/null\n"
-                f"timeout {timeout} docker exec \"$CID\" /benchmark/evaluate.sh \"$MODE\" \"$CANDIDATE\"\n"
+                f"timeout {timeout} docker exec \"$CID\" /benchmark/evaluate.sh \"$CANDIDATE\" \"$MODE\"\n"
                 "docker exec \"$CID\" rm -f \"$CANDIDATE\"\n"
             )
         script_path = workspace / "run_eval.sh"

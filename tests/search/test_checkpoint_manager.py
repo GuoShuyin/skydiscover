@@ -1,5 +1,6 @@
 """Tests for CheckpointManager.save() — evolution_trace.json output."""
 
+import dataclasses
 import json
 import time
 
@@ -86,7 +87,7 @@ class TestEvolutionTrace:
         assert by_id["b"]["parent_id"] == "a"
 
     def test_trace_no_metrics_score_is_none(self, manager, tmp_path):
-        prog = Program(id="x", solution="pass", metrics={})
+        prog = dataclasses.replace(_make_program("x", 0, 0.0), metrics={})
         manager.save({"x": prog}, None, None, 0)
         trace = json.loads((tmp_path / "evolution_trace.json").read_text())
         assert trace["programs"][0]["score"] is None

@@ -39,9 +39,11 @@ if [ "${DIND:-}" = "1" ]; then
         echo "$EVAL_CID" > /workspace/.evaluator-container-id
     fi
 
-    # Make workspace writable by the claude user. chown fails on Docker
-    # Desktop for Mac volume mounts, so fall back to chmod.
-    chown -R claude:claude /workspace 2>/dev/null || chmod -R 777 /workspace 2>/dev/null || true
+    # Make workspace writable by the claude user, and keep it readable by
+    # the host user (who runs the controller) so solution.py can be read
+    # back for checkpointing and final evaluation.
+    chown -R claude:claude /workspace 2>/dev/null || true
+    chmod -R a+rX /workspace 2>/dev/null || true
 
     # Drop to non-root user. The controller writes the command to a
     # script file (.run.sh) to avoid quoting issues with su -c.

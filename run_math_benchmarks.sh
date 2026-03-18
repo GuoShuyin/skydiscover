@@ -14,23 +14,15 @@ ITERS=100
 BENCH="benchmarks/math"
 
 # ─────────────────────────────────────────────────────────────────────────────
-# BATCH 1 — signal_processing (verify end-to-end before launching more)
+# BATCH 1 — circle packing + signal processing
 # ─────────────────────────────────────────────────────────────────────────────
 
-$CMD $BENCH/signal_processing/initial_program.py $BENCH/signal_processing/evaluator -c $BENCH/signal_processing/config.yaml -s $SEARCH -m $MODEL -i $ITERS -o $OUTDIR/signal_processing &
+$CMD $BENCH/signal_processing/initial_program.py   $BENCH/signal_processing/evaluator   -c $BENCH/signal_processing/config.yaml   -s $SEARCH -m $MODEL -i $ITERS -o $OUTDIR/signal_processing   &
+$CMD $BENCH/circle_packing/initial_program.py      $BENCH/circle_packing/evaluator      -c $BENCH/circle_packing/config.yaml      -s $SEARCH -m $MODEL -i $ITERS -o $OUTDIR/circle_packing      &
+$CMD $BENCH/circle_packing_rect/initial_program.py $BENCH/circle_packing_rect/evaluator -c $BENCH/circle_packing_rect/config.yaml -s $SEARCH -m $MODEL -i $ITERS -o $OUTDIR/circle_packing_rect &
 
 wait
 echo "Batch 1 done."
-
-# ─────────────────────────────────────────────────────────────────────────────
-# BATCH 2 — circle packing pair
-# ─────────────────────────────────────────────────────────────────────────────
-
-# $CMD $BENCH/circle_packing/initial_program.py      $BENCH/circle_packing/evaluator      -c $BENCH/circle_packing/config.yaml      -s $SEARCH -m $MODEL -i $ITERS -o $OUTDIR/circle_packing      &
-# $CMD $BENCH/circle_packing_rect/initial_program.py $BENCH/circle_packing_rect/evaluator -c $BENCH/circle_packing_rect/config.yaml -s $SEARCH -m $MODEL -i $ITERS -o $OUTDIR/circle_packing_rect &
-
-# wait
-# echo "Batch 2 done."
 
 # ─────────────────────────────────────────────────────────────────────────────
 # BATCH 3 — heilbronn family

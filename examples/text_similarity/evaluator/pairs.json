@@ -2,7 +2,6 @@
   ["the cat sat on the mat", "the cat sat on the mat", 1.0],
   ["the cat sat on the mat", "the cat sat on a mat", 0.9],
   ["restaurant", "restarant", 0.9],
-  ["accommodation", "accomodation", 0.9],
 
   ["the movie was great", "the film was excellent", 0.85],
   ["she is happy", "she feels joyful", 0.8],

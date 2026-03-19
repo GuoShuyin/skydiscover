@@ -5,6 +5,6 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: 'SkyDiscover',
     },
-    githubUrl: 'https://github.com/NovaSky-AI/SkyDiscover',
+    githubUrl: 'https://github.com/skydiscover-ai/skydiscover',
   };
 }

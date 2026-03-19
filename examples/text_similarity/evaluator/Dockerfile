@@ -1,8 +1,7 @@
 FROM python:3.12-slim
 WORKDIR /benchmark
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir scipy
 
 COPY evaluator.py pairs.json evaluate.sh ./
 RUN chmod +x evaluate.sh

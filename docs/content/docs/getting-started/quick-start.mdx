@@ -14,13 +14,14 @@ The baseline uses raw edit distance — here's what it gets wrong:
 
 ## 1. Set up the task folder
 
-First, create the folder structure for the task:
+First, create the folder structure for the task containing the mandatory files:
 
 <Files>
   <Folder name="examples/text_similarity" defaultOpen>
     <File name="config.yaml" />
     <Folder name="evaluator" defaultOpen>
       <File name="evaluate.sh" />
+      <File name="Dockerfile" />
     </Folder>
     <File name="initial_program.py" />
   </Folder>
@@ -34,7 +35,7 @@ First, create the folder structure for the task:
 
 Populate the config with the system_message to give context about the problem, and which LLM to use.
 
-```yaml
+```yaml title="config.yaml"
 language: python
 max_iterations: 50
 checkpoint_interval: 5
@@ -67,7 +68,7 @@ monitor:
 
 The evaluator runs in Docker. `evaluate.sh` is the entry point — it receives
 a candidate program path and prints a JSON score to stdout. Here are all
-three files:
+four files:
 
 <Tabs items={["evaluator.py", "pairs.json", "evaluate.sh", "Dockerfile"]}>
   <Tab value="evaluator.py">
@@ -103,9 +104,17 @@ def main():
     human = [h for _, _, h in PAIRS]
     correlation = spearmanr(predicted, human).statistic
 
+    import random
+    samples = random.sample(range(len(PAIRS)), 3)
+    lines = [f"Spearman correlation: {correlation:.4f}", ""]
+    for i in samples:
+        a, b, h = PAIRS[i]
+        lines.append(f"  '{a}' vs '{b}': predicted={predicted[i]:.2f}, human={h:.2f}")
+
     print(json.dumps({
         "status": "success",
         "combined_score": round(max(0.0, correlation), 4),
+        "artifacts": {"feedback": "\n".join(lines)},
     }))
 
 
@@ -119,7 +128,6 @@ if __name__ == "__main__":
   ["the cat sat on the mat", "the cat sat on the mat", 1.0],
   ["the cat sat on the mat", "the cat sat on a mat", 0.9],
   ["restaurant", "restarant", 0.9],
-  ["accommodation", "accomodation", 0.9],
 
   ["the movie was great", "the film was excellent", 0.85],
   ["she is happy", "she feels joyful", 0.8],
@@ -181,8 +189,7 @@ python /benchmark/evaluator.py "$1"
 FROM python:3.12-slim
 WORKDIR /benchmark
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir scipy
 
 COPY evaluator.py pairs.json evaluate.sh ./
 RUN chmod +x evaluate.sh

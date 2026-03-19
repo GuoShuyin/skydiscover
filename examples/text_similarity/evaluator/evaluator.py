@@ -3,6 +3,7 @@
 
 import importlib.util
 import json
+import random
 import sys
 
 from scipy.stats import spearmanr
@@ -30,17 +31,16 @@ def main():
     human = [h for _, _, h in PAIRS]
     correlation = spearmanr(predicted, human).statistic
 
-    # Sample predictions for LLM feedback
-    samples = [4, 10, 20, 28]  # paraphrase, reorder, negation, short-string
-    feedback_lines = [f"Spearman correlation: {correlation:.4f}", ""]
+    samples = random.sample(range(len(PAIRS)), 3)
+    lines = [f"Spearman correlation: {correlation:.4f}", ""]
     for i in samples:
         a, b, h = PAIRS[i]
-        feedback_lines.append(f"  '{a}' vs '{b}': predicted={predicted[i]:.2f}, human={h:.2f}")
+        lines.append(f"  '{a}' vs '{b}': predicted={predicted[i]:.2f}, human={h:.2f}")
 
     print(json.dumps({
         "status": "success",
         "combined_score": round(max(0.0, correlation), 4),
-        "artifacts": {"feedback": "\n".join(feedback_lines)},
+        "artifacts": {"feedback": "\n".join(lines)},
     }))
 
 

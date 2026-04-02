@@ -60,7 +60,7 @@ evox/
 ## Usage
 
 ```bash
-uv run skydiscover-run initial_program.py evaluator.py \
+uv run python -m skydiscover initial_program.py evaluator.py \
   --config config.yaml --search evox --iterations 100
 ```
 

@@ -395,18 +395,19 @@ class MonitorServer:
             await self._ws_send(writer, json.dumps(self._build_init_state()))
         elif t == "request_program_solution":
             pid = msg.get("program_id", "")
+            solution = self._program_solutions.get(pid, "")[: self.max_solution_length]
+            parent_solution = self._parent_solutions.get(pid, "")[: self.max_solution_length]
             await self._ws_send(
                 writer,
                 json.dumps(
                     {
                         "type": "program_solution",
                         "program_id": pid,
-                        "solution": self._program_solutions.get(pid, "")[
-                            : self.max_solution_length
-                        ],
-                        "parent_solution": self._parent_solutions.get(pid, "")[
-                            : self.max_solution_length
-                        ],
+                        "solution": solution,
+                        "parent_solution": parent_solution,
+                        # Backward-compatible aliases for older dashboard code.
+                        "code": solution,
+                        "parent_code": parent_solution,
                     }
                 ),
             )

@@ -15,7 +15,7 @@ Island model with population size 40, 5 islands, and migration. Supports diff-ba
 ### Usage
 
 ```bash
-uv run skydiscover-run initial_program.py evaluator.py \
+uv run python -m skydiscover initial_program.py evaluator.py \
   --config config.yaml --search openevolve --iterations 100
 ```
 
@@ -53,7 +53,7 @@ Delegates directly to GEPA's `optimize_anything` API with reflection-guided opti
 ### Usage
 
 ```bash
-uv run skydiscover-run initial_program.py evaluator.py \
+uv run python -m skydiscover initial_program.py evaluator.py \
   --config config.yaml --search gepa --iterations 100
 ```
 
@@ -86,7 +86,7 @@ Multi-patch evolution (diff 60%, full 30%, cross 10%) with dynamic LLM selection
 ### Usage
 
 ```bash
-uv run skydiscover-run initial_program.py evaluator.py \
+uv run python -m skydiscover initial_program.py evaluator.py \
   --config config.yaml --search shinkaevolve --iterations 100
 ```
 

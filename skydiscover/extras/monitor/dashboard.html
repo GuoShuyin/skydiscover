@@ -1345,7 +1345,7 @@
         <div class="code-tab active" onclick="showTab('code')">${p.image_path ? 'Prompt' : 'Code'}</div>
         <div class="code-tab" onclick="showTab('parent-code')">${p.image_path ? 'Parent Prompt' : 'Parent Code'}</div>
       </div>
-      <div id="code-display" class="code-block">${escapeHtml(p.code_snippet || '...')}\n\n(Loading full ${p.image_path ? 'prompt' : 'code'}...)</div>
+      <div id="code-display" class="code-block">${escapeHtml(p.solution_snippet || p.code_snippet || '...')}\n\n(Loading full ${p.image_path ? 'prompt' : 'code'}...)</div>
       <div id="parent-code-display" class="code-block" style="display:none">Loading...</div>
     `;
   }
@@ -1388,7 +1388,7 @@
     if (!codeEl || !parentEl) return;
 
     document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
-    if (tab === 'solution') {
+    if (tab === 'code' || tab === 'solution') {
       codeEl.style.display = 'block';
       parentEl.style.display = 'none';
       document.querySelectorAll('.code-tab')[0].classList.add('active');
@@ -1403,8 +1403,10 @@
     if (msg.program_id !== selectedId) return;
     const codeEl = document.getElementById('code-display');
     const parentEl = document.getElementById('parent-code-display');
-    if (codeEl) codeEl.textContent = msg.code || '(no code)';
-    if (parentEl) parentEl.textContent = msg.parent_code || '(no parent code)';
+    const code = msg.solution || msg.code || '';
+    const parentCode = msg.parent_solution || msg.parent_code || '';
+    if (codeEl) codeEl.textContent = code || '(no code)';
+    if (parentEl) parentEl.textContent = parentCode || '(no parent code)';
 
     // Request image if this program has one (image evolution mode)
     const p = programMap[msg.program_id];

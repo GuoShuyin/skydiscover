@@ -1,0 +1,45 @@
+# Current Safety and Performance
+- Main Metrics:
+{metrics}
+- Focus areas:
+{improvement_areas}
+
+# Previous Attempts
+{previous_attempts}
+
+{other_context_programs}
+
+{current_program}
+
+# Task
+Rewrite the entire mutable protocol slice to improve COMBINED_SCORE.
+
+The evaluator will splice your candidate into the fixed project and then:
+- compile the full P project
+- run model checking for `LSISafety`
+- run model checking for `NoStaleWriteCommitted`
+- score efficiency from verbose traces
+
+Your candidate must:
+- define `machine StorageProxy`
+- define `machine CacheNode`
+- preserve event names, payload shapes, machine names, and client response
+  formats expected by the fixed tests
+
+Safety is non-negotiable. A design that saves messages but allows an LSI
+violation or a stale write commit is worthless.
+
+Focus your redesign on protocol ideas such as:
+- fewer unnecessary metadata refresh / fencing-installation rounds
+- more disciplined handoff and retry behavior
+- reducing duplicate DB reads and writes
+- better cache admission / eviction under ownership change
+- proxy release policies that lower cost without weakening fencing
+
+Return only the complete replacement slice.
+
+```{language}
+// Your rewritten mutable protocol slice here
+```
+
+{timeout_warning}

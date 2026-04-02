@@ -1,0 +1,11 @@
+<Project>
+  <ProjectName>ProtocolDiscovery</ProjectName>
+  <InputFiles>
+    <PFile>./PSrc/Fixed.p</PFile>
+    <PFile>./PSrc/Candidate.p</PFile>
+    <PFile>./PSpec/Spec.p</PFile>
+    <PFile>./PTst/Drivers.p</PFile>
+    <PFile>./PTst/TestScript.p</PFile>
+  </InputFiles>
+  <OutputDir>./PGenerated</OutputDir>
+</Project>

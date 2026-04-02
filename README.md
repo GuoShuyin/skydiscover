@@ -70,6 +70,9 @@ See [Dependency extras](#dependency-extras) for install commands per benchmark.
 
 **Prerequisites:** Python >= 3.10, [uv](https://docs.astral.sh/uv/)
 
+The examples below use `python -m skydiscover`, which is more robust than the
+generated `skydiscover-run` wrapper in some Conda/macOS setups.
+
 ```bash
 # Install
 uv sync
@@ -77,13 +80,13 @@ export OPENAI_API_KEY="<your-key>"
 
 # Try the circle packing benchmark
 uv sync --extra math
-uv run skydiscover-run benchmarks/math/circle_packing/initial_program.py \
+uv run python -m skydiscover benchmarks/math/circle_packing/initial_program.py \
   benchmarks/math/circle_packing/evaluator.py \
   --config benchmarks/math/circle_packing/config.yaml \
   --search evox \
   --iterations 100
 
-uv run skydiscover-run benchmarks/math/circle_packing/initial_program.py \
+uv run python -m skydiscover benchmarks/math/circle_packing/initial_program.py \
   benchmarks/math/circle_packing/evaluator.py \
   --config benchmarks/math/circle_packing/config.yaml \
   --search adaevolve \
@@ -91,13 +94,13 @@ uv run skydiscover-run benchmarks/math/circle_packing/initial_program.py \
 
 # Or run on your own problem
 # algo can be "evox", "adaevolve", "openevolve", "gepa", "shinkaevolve"
-uv run skydiscover-run initial_program.py evaluator.py \
+uv run python -m skydiscover initial_program.py evaluator.py \
   --search <algo> \
   --model gpt-5 \
   --iterations 100
 
 # initial_program is optional — omit it to let the LLM start from scratch
-uv run skydiscover-run evaluator.py \
+uv run python -m skydiscover evaluator.py \
   --search <algo> \
   --model gpt-5 \
   --iterations 100
@@ -105,7 +108,7 @@ uv run skydiscover-run evaluator.py \
 # Run a Harbor benchmark (e.g. AlgoTune) — no seed program needed
 pip install harbor
 harbor datasets download algotune@1.0 -o /tmp/algotune
-uv run skydiscover-run /tmp/algotune/<id>/algotune-set-cover \
+uv run python -m skydiscover /tmp/algotune/<id>/algotune-set-cover \
   --model anthropic/claude-sonnet-4-6 \
   --search best_of_n -i 10
 ```
@@ -233,7 +236,7 @@ Add `monitor: { enabled: true }` to your config. The dashboard URL prints at run
 Replay a completed run:
 
 ```bash
-uv run skydiscover-viewer /path/to/checkpoints/checkpoint_100
+uv run python -m skydiscover.viewer /path/to/checkpoints/checkpoint_100
 ```
 
 
@@ -243,7 +246,7 @@ uv run skydiscover-viewer /path/to/checkpoints/checkpoint_100
 <summary><b>CLI flags</b></summary>
 
 ```
-uv run skydiscover-run [INITIAL_PROGRAM] EVALUATOR [options]
+uv run python -m skydiscover [INITIAL_PROGRAM] EVALUATOR [options]
 ```
 
 | Flag | Description |

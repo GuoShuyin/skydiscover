@@ -11,10 +11,45 @@ from skydiscover.search.base_database import Program, ProgramDatabase
 logger = logging.getLogger(__name__)
 
 
+def _load_text_context_dir(context_dir: Path, title: str) -> str:
+    """Load a small bundle of text files for prompt-side task context."""
+    if not context_dir.exists() or not context_dir.is_dir():
+        return ""
+
+    skip_names = {"Dockerfile", "requirements.txt"}
+    skip_suffixes = {".json", ".pyc"}
+    max_files = 12
+    max_bytes = 50_000
+
+    parts = [f"# {title}"]
+    count = 0
+    for file_path in sorted(context_dir.rglob("*")):
+        if count >= max_files:
+            break
+        if not file_path.is_file():
+            continue
+        if file_path.name.startswith(".") or file_path.name in skip_names:
+            continue
+        if file_path.suffix in skip_suffixes:
+            continue
+        if file_path.stat().st_size > max_bytes:
+            continue
+        try:
+            rel = file_path.relative_to(context_dir)
+            parts.append(f"## {rel}\n{file_path.read_text()}")
+            count += 1
+        except Exception:
+            pass
+
+    return "\n\n".join(parts) if count > 0 else ""
+
+
 def load_evaluator_code(evaluation_file: Optional[str]) -> str:
     """Return evaluator source as a string for LLM context.
 
     For a plain Python file, returns its contents.
+    If a sibling `evaluator_context/` or `<stem>_context/` directory exists
+    next to that file, append small text/code examples from it.
     For a containerized benchmark directory, returns all text files except
     infrastructure files (Dockerfile, requirements.txt) and data files (.json).
     """
@@ -31,25 +66,14 @@ def load_evaluator_code(evaluation_file: Optional[str]) -> str:
             if instruction.exists():
                 return instruction.read_text()
 
-            _SKIP = {"Dockerfile", "requirements.txt"}
-            _MAX_FILES = 10
-            _MAX_BYTES = 50_000
-            parts = []
-            for f in sorted(p.iterdir()):
-                if len(parts) >= _MAX_FILES:
-                    break
-                if not f.is_file():
-                    continue
-                if f.name in _SKIP or f.suffix == ".json":
-                    continue
-                if f.stat().st_size > _MAX_BYTES:
-                    continue
-                try:
-                    parts.append(f"# {f.name}\n{f.read_text()}")
-                except Exception:
-                    pass  # skip binary or unreadable files
-            return "\n\n".join(parts)
-        return p.read_text()
+            return _load_text_context_dir(p, "Task Files")
+
+        parts = [p.read_text()]
+        for context_dir in (p.parent / "evaluator_context", p.parent / f"{p.stem}_context"):
+            context_text = _load_text_context_dir(context_dir, f"Supplemental Context: {context_dir.name}")
+            if context_text:
+                parts.append(context_text)
+        return "\n\n".join(parts)
     except Exception as e:
         logger.warning(f"Could not load evaluator code from {evaluation_file}: {e}")
         return ""

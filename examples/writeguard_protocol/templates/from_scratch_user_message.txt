@@ -1,0 +1,33 @@
+{other_context_programs}
+
+# Task
+Generate a new mutable protocol slice for the distributed cache benchmark.
+
+The evaluator will splice your candidate into a fixed P project. Your output
+must define exactly these two machines:
+- `machine StorageProxy`
+- `machine CacheNode`
+
+The fixed environment already provides:
+- all types and events
+- an ownership controller
+- a storage backend
+- test drivers and safety monitors
+
+Hard requirements:
+- preserve the public event interface used by the fixed harness
+- keep the design a write-through cache with storage-side protection against
+  late writes from expired owners
+- prioritize safety over all efficiency gains
+
+Primary objectives:
+1. No `LSISafety` violation.
+2. No `NoStaleWriteCommitted` violation.
+3. Lower cache<->DB round trips and control-plane overhead.
+4. Better cache hit rate.
+
+```{language}
+// Define machine StorageProxy and machine CacheNode here
+```
+
+{timeout_warning}

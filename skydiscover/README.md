@@ -45,6 +45,6 @@ subclass it and override `run_discovery()`.
 | Entry point | Use case |
 |:---|:---|
 | `api.py` | Python API — `run_discovery()`, `discover_solution()` |
-| `cli.py` | CLI — `skydiscover-run` |
+| `cli.py` | CLI — `python -m skydiscover` (also exposed as `skydiscover-run`) |
 | `runner.py` | Setup and run (used by both API and CLI) |
 | `config.py` | Configuration loading and overrides |

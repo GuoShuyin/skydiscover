@@ -1,0 +1,349 @@
+{
+  "num_islands": 2,
+  "current_island": 1,
+  "iteration_count": 104,
+  "global_best_score": 0.8499999999999999,
+  "decay": 0.9,
+  "intensity_min": 0.15,
+  "intensity_max": 0.5,
+  "migration_interval": 15,
+  "diversity_strategy_type": "code",
+  "use_unified_archive": true,
+  "use_adaptive_search": true,
+  "use_ucb_selection": true,
+  "fixed_intensity": 0.4,
+  "adapter": {
+    "states": [
+      {
+        "accumulated_signal": 0.06363841344524428,
+        "best_score": 0.8499999999999999,
+        "improvement_count": 6,
+        "total_evaluations": 34,
+        "decay": 0.9,
+        "epsilon": 1e-08,
+        "intensity_min": 0.15,
+        "intensity_max": 0.5
+      },
+      {
+        "accumulated_signal": 0.05856344120704292,
+        "best_score": 0.8499999999999999,
+        "improvement_count": 7,
+        "total_evaluations": 34,
+        "decay": 0.9,
+        "epsilon": 1e-08,
+        "intensity_min": 0.15,
+        "intensity_max": 0.5
+      }
+    ],
+    "dimension_visits": [
+      34,
+      34
+    ],
+    "dimension_rewards": [
+      0.081234563652424,
+      0.08187547567075054
+    ],
+    "decayed_visits": [
+      9.72187161055631,
+      9.72187161055631
+    ],
+    "global_best_score": 0.8499999999999999,
+    "ucb_exploration": 1.41,
+    "min_visits": 3,
+    "decay": 0.9,
+    "epsilon": 1e-08
+  },
+  "island_config_names": [
+    "balanced",
+    "balanced"
+  ],
+  "islands": [
+    [
+      "1eec8c2f-4da0-4424-9c0b-65686b672947",
+      "c13da012-6c53-4d99-8e63-f85010e19ab2",
+      "625410c8-b2b3-4503-87a9-a52e11638c88",
+      "2550d1e1-ef3a-4896-b2c7-36e0221131c7",
+      "223fdf51-0834-458e-b99f-0c622ed36d42",
+      "6f71ce0e-18f3-4f4c-8bb7-488f34b899de",
+      "16a7c961-dae2-4ddc-a9ab-8d8a9ed584bf",
+      "ad26f88f-e517-47a8-ae6d-439109bc0a6a"
+    ],
+    [
+      "c67e0324-480e-42fe-be91-2312aa2ce05a",
+      "167f8b38-7202-4a6a-bb1e-97535869e279",
+      "e1caadc8-d16e-4afc-b78e-2bf34f4f7c60",
+      "fe867ee4-f324-4297-b91a-2a269166322d",
+      "081c76f9-e6d7-4dd3-bb89-48a0efd97c55",
+      "3529fd7d-9732-4698-8d7b-afad51c1284a",
+      "b4f30b24-c2b2-4d22-ac81-559ddd87fae6",
+      "0ccfa919-7a7b-4fff-bfd8-15722f44ac9f"
+    ]
+  ],
+  "archive_genealogies": [
+    {
+      "parents": {
+        "1eec8c2f-4da0-4424-9c0b-65686b672947": [
+          "4fa08af6-525e-4029-bd17-8fa06d280f4d"
+        ],
+        "c13da012-6c53-4d99-8e63-f85010e19ab2": [
+          "d582677f-a5f8-4ebf-ace3-8cc75cb28129"
+        ],
+        "625410c8-b2b3-4503-87a9-a52e11638c88": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ],
+        "2550d1e1-ef3a-4896-b2c7-36e0221131c7": [
+          "fe867ee4-f324-4297-b91a-2a269166322d"
+        ],
+        "223fdf51-0834-458e-b99f-0c622ed36d42": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ],
+        "6f71ce0e-18f3-4f4c-8bb7-488f34b899de": [
+          "d582677f-a5f8-4ebf-ace3-8cc75cb28129"
+        ],
+        "16a7c961-dae2-4ddc-a9ab-8d8a9ed584bf": [
+          "081c76f9-e6d7-4dd3-bb89-48a0efd97c55"
+        ],
+        "ad26f88f-e517-47a8-ae6d-439109bc0a6a": [
+          "625410c8-b2b3-4503-87a9-a52e11638c88"
+        ]
+      },
+      "children": {
+        "c67e0324-480e-42fe-be91-2312aa2ce05a": [
+          "625410c8-b2b3-4503-87a9-a52e11638c88",
+          "223fdf51-0834-458e-b99f-0c622ed36d42"
+        ],
+        "fe867ee4-f324-4297-b91a-2a269166322d": [
+          "2550d1e1-ef3a-4896-b2c7-36e0221131c7"
+        ],
+        "081c76f9-e6d7-4dd3-bb89-48a0efd97c55": [
+          "16a7c961-dae2-4ddc-a9ab-8d8a9ed584bf"
+        ],
+        "625410c8-b2b3-4503-87a9-a52e11638c88": [
+          "ad26f88f-e517-47a8-ae6d-439109bc0a6a"
+        ]
+      }
+    },
+    {
+      "parents": {
+        "c67e0324-480e-42fe-be91-2312aa2ce05a": [
+          "1eec8c2f-4da0-4424-9c0b-65686b672947"
+        ],
+        "167f8b38-7202-4a6a-bb1e-97535869e279": [
+          "c13da012-6c53-4d99-8e63-f85010e19ab2"
+        ],
+        "e1caadc8-d16e-4afc-b78e-2bf34f4f7c60": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ],
+        "fe867ee4-f324-4297-b91a-2a269166322d": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ],
+        "081c76f9-e6d7-4dd3-bb89-48a0efd97c55": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ],
+        "3529fd7d-9732-4698-8d7b-afad51c1284a": [
+          "223fdf51-0834-458e-b99f-0c622ed36d42"
+        ],
+        "b4f30b24-c2b2-4d22-ac81-559ddd87fae6": [
+          "223fdf51-0834-458e-b99f-0c622ed36d42"
+        ],
+        "0ccfa919-7a7b-4fff-bfd8-15722f44ac9f": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ]
+      },
+      "children": {
+        "1eec8c2f-4da0-4424-9c0b-65686b672947": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ],
+        "c13da012-6c53-4d99-8e63-f85010e19ab2": [
+          "167f8b38-7202-4a6a-bb1e-97535869e279"
+        ],
+        "c67e0324-480e-42fe-be91-2312aa2ce05a": [
+          "e1caadc8-d16e-4afc-b78e-2bf34f4f7c60",
+          "fe867ee4-f324-4297-b91a-2a269166322d",
+          "081c76f9-e6d7-4dd3-bb89-48a0efd97c55",
+          "0ccfa919-7a7b-4fff-bfd8-15722f44ac9f"
+        ],
+        "223fdf51-0834-458e-b99f-0c622ed36d42": [
+          "3529fd7d-9732-4698-8d7b-afad51c1284a",
+          "b4f30b24-c2b2-4d22-ac81-559ddd87fae6"
+        ]
+      }
+    }
+  ],
+  "use_dynamic_islands": true,
+  "max_islands": 5,
+  "last_spawn_iteration": -30,
+  "use_paradigm_breakthrough": true,
+  "paradigm_tracker": {
+    "window_size": 10,
+    "improvement_threshold": 0.12,
+    "max_paradigm_uses": 2,
+    "max_tried_paradigms": 10,
+    "num_paradigms_to_generate": 3,
+    "improvement_history": [
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "active_paradigms": [
+      {
+        "idea": "Global optimization of proxy-side serve-from-cache gating via scipy.optimize.differential_evolution",
+        "description": "Introduce an authoritative shared cache inside StorageProxy that returns reads directly when safe. Parameterize the policy by two continuous knobs: x in [0,1] enabling serve-from-proxy when no inflight writes for the key (strict gate when x>0.5), and y in [0,1] enabling opportunistic serve for keys whose last response is newer than a recency watermark and no forward was queued (y>0.5). Use scipy.optimize.differential_evolution to maximize a weighted proxy-side objective estimated from trace statistics (LSI violations hard-penalized, round-trip efficiency and hit-rate rewarded). The proxy updates its committed-value map on storage responses and consults inflightPerKey to guard safety; the optimizer tunes only whether the opportunistic leg is on and how aggressively to short-circuit under congestion. This keeps authority metadata compact and reuses existing per-key inflight tracking and request IDs. The result is an implementable single-codepath change: proxy short-circuits eStorageRead with immediate eStorageReadResp and eMonitorProxyResponseDelivered when the learned policy says safe.",
+        "what_to_optimize": "Maximize safety_score (hard), then round_trip_efficiency and cache_hit_rate by tuning the two gating parameters for serve-from-proxy short-circuiting.",
+        "cautions": "Never serve from proxy if inflightPerKey[key] is nonempty; storage may have already committed ahead of response delivery. Announce eMonitorProxyResponseDelivered on short-circuit. Do not enqueue or announce eMonitorProxyEnqueue for short-circuited reads. Keep request-ID matching unchanged. Bound the optimizer to two parameters only to avoid overfitting and respect evaluation time.",
+        "approach_type": "scipy.optimize.differential_evolution"
+      },
+      {
+        "idea": "Hot/cold key clustering at proxy to apply cluster-level caching policy using scipy.cluster.vq.kmeans",
+        "description": "Have StorageProxy maintain lightweight per-key counters of recent writes and failed short-circuit attempts. Periodically run kmeans over 2D features (write_rate, short_circuit_success_rate) to partition keys into hot vs cold clusters. Apply a strict no-cache-serve policy to hot keys (always forward reads to storage) and enable proxy short-circuit serve for cold keys when inflightPerKey is empty. This concentrates proxy cache benefits on keys with low write churn where LSI-safe short-circuits are likely, improving hit-rate without risking serving stale values under heavy write contention. The clustering is a single call to kmeans with k=2; cluster labels drive an O(1) check on each read. This remains scalable and independent of shard/tablet movement because it\u2019s key-local and proxy-centered.",
+        "what_to_optimize": "Improve cache_hit_rate and round_trip_efficiency on cold keys while preserving safety_score by disabling short-circuits on hot keys.",
+        "cautions": "Keep the safety gate: even cold keys must not be short-circuited if there are inflight writes. Limit clustering cadence and feature window size to bounded memory. Do not push cluster state to pods (avoid extra control traffic); only the proxy uses it to decide short-circuits. Preserve eMonitor events semantics.",
+        "approach_type": "scipy.cluster.vq.kmeans"
+      },
+      {
+        "idea": "Assign per-key primary pod aggregators with Hungarian algorithm to coalesce cross-pod duplicates before proxy using scipy.optimize.linear_sum_assignment",
+        "description": "Introduce a lightweight Aggregator helper per pod pair; each key is assigned a primary pod that aggregates same-key requests across pods and forwards a single consolidated request to the proxy. Compute a static (or periodically refreshed) assignment of hot keys to primary pods to balance load and minimize cross-pod forwards using the Hungarian algorithm on a cost matrix derived from observed per-pod key access rates. Non-primary pods send same-key ops to the primary (local hop), which coalesces reads and serializes writes per key with request IDs, dramatically reducing CacheNode<->Proxy round trips under contention. The proxy behavior remains unchanged and authoritative; only the ingress pattern changes to reduce queue pressure and redundant traffic.",
+        "what_to_optimize": "Reduce local pod/cache <-> proxy round trips (round_trip_efficiency) while maintaining safety_score by ensuring all writes still pass through the proxy and reads respect inflight gates.",
+        "cautions": "Ensure aggregator preserves per-key order and maintains a map of waiting clients for fan-out responses. Avoid forming forwarding cycles; assignment must be a total mapping key->primary. Do not serve from aggregator caches; only the proxy or storage replies determine values. Keep request IDs stable through aggregation to avoid response misrouting.",
+        "approach_type": "scipy.optimize.linear_sum_assignment"
+      }
+    ],
+    "paradigm_usage_counts": {
+      "0": 2,
+      "1": 2,
+      "2": 2
+    },
+    "current_paradigm_index": 2,
+    "tried_paradigms": [
+      {
+        "idea": "CacheNode-side batching: per-key write buffering and single-flight read barriers",
+        "description": "Introduce a small per-key write buffer in each CacheNode that delays sending a new write for key K if another write to K is inflight; instead, store the latest value in a pending slot and, when the inflight write completes, immediately send exactly one follow-up write with the final buffered value. For reads, implement a single-flight barrier: if a read for K arrives with no inflight read, send exactly one eStorageRead and attach any subsequent readers to its waiter list until the response comes back; if a write to K is inflight, reads wait for its eStorageWriteResp and complete using that value (no separate read). This converts bursts of operations on the same key into at most one outbound send at a time and exploits natural locality in write-heavy workloads. The protocol remains simple and safe because every value served without a new proxy hop is either the committed value from a just-finished write or the shared response from a single storage read.",
+        "what_to_optimize": "Reduce the number of cache->proxy sends per key by collapsing write bursts and coalescing read storms; improve round_trip_efficiency especially under write-heavy contention while keeping safety_score maximal.",
+        "cautions": "Avoid indefinite buffering: if a follow-up write is pending when a write resp arrives, send exactly one new write and clear the buffer; do not chain unlimited deferrals. Ensure waiter lists are drained on both write and read completions. Maintain strict per-key response matching to avoid mixing values across operations. Emit monitoring events only for real sends, and keep fromCache=false for read completions that used a shared storage read; only mark fromCache=true if served from a committed write\u2019s returned value without an extra read.",
+        "approach_type": "protocol.CacheNode.batch_and_singleflight",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      },
+      {
+        "idea": "CommitBus publish-subscribe: proxy broadcasts per-key commit watermarks; add a SharedCache behind pods",
+        "description": "Introduce a tiny CommitBus helper machine that the StorageProxy notifies only at two points: when it enqueues a write and when it receives a write response. The bus maintains, per key, a compact (lastCommitCsn, lastValue, hasOutstandingWrite) tuple derived strictly from proxy-observed storage acks. CacheNodes subscribe to the bus (single broadcast channel), keep a mirror of the watermark map, and can serve reads locally without touching storage only if (a) hasOutstandingWrite is false for the key and (b) their cached value-tag equals the bus\u2019s lastCommitCsn. To improve hit rate under write-heavy load, add one SharedCache helper machine (pod-facing, not storage-facing) that also subscribes to the bus and stores (key -> (value, csn)); CacheNodes first query SharedCache; on hit where csn matches bus watermark, they respond locally; on miss, they fall back to proxy. This preserves LSI because only commit-ack-derived watermarks authorize cache returns; it scales since metadata is per-key counters and a single pub-sub channel. It is robust to key-range/ownership moves because keys are opaque and authority is the commit watermark at the proxy layer.",
+        "what_to_optimize": "Maximize safety_score via strict commit-ack-derived tags; increase round_trip_efficiency by serving hot reads from SharedCache and local caches; increase cache_hit_rate by centralizing hot values and broadcasting commits promptly.",
+        "cautions": "Keep StorageProxy network-centric: only emit two lightweight notifications to CommitBus and do not short-circuit storage reads; ensure per-key request IDs and opId matching remain unchanged. Guarantee that CacheNodes NEVER serve from cache if bus.hasOutstandingWrite[key] is true or if their cached tag != bus.lastCommitCsn[key]. Announce eMonitorProxy* events unchanged. Ensure broadcasts are asynchronous but monotonic: apply updates in order and guard against reordering with csn checks.",
+        "approach_type": "scipy.optimize.linprog",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      },
+      {
+        "idea": "Proxy fast-path If-Equal validation: CacheNode sends a value-hint; proxy replies immediately if it matches last committed",
+        "description": "Extend eStorageRead with an optional hintValue and hintHas flag from CacheNode to StorageProxy. StorageProxy maintains a minimal per-key mirror of the last committed value only by observing storage read/write responses (no speculative state). On receiving eStorageRead, if hintHas is true and there is no queued write for that key and hintValue equals the proxy\u2019s lastCommittedValue[key], the proxy immediately returns eStorageReadResp to the caller (announce eMonitorProxyResponseDelivered) without touching storage. Otherwise, it enqueues and forwards to storage as today. This preserves LSI because the proxy\u2019s equality check is against values learned from actual commit/read acks, and it refuses fast-path when any write for the key is pending. It avoids epochs/leases and keeps authority metadata compact (one scalar per key). Under balanced write-heavy workloads with temporal locality, many reads can be satisfied via this equality-validated fast-path, reducing round trips.",
+        "what_to_optimize": "Maximize round_trip_efficiency by enabling zero-storage-touch reads on equality match; maintain safety_score by only using commit-ack-learned values and gating on no in-flight writes; modestly increase cache_hit_rate by letting CacheNodes leverage their local data as hints.",
+        "cautions": "Do not let the proxy cache mutate application semantics: it must only mirror lastCommittedValue on storage responses and must not fabricate values. Carefully gate on per-key pending writes in the proxy queue; if any exist, disable the fast-path. Preserve strict request-ID matching; update proxy inflightPerKey logic to prevent mixing fast-path and queued ops. Keep all monitoring announcements intact and ensure the optimization does not bypass eMonitorProxy* emission requirements.",
+        "approach_type": "networkx.algorithms.flow.maximum_flow",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      },
+      {
+        "idea": "Peer-cooperative cache with commit-counters: proxy stamps write acks with per-key commit counters; pods gossip committed values",
+        "description": "Have StorageProxy attach a monotonic per-key commitCounter to each eStorageWriteResp it forwards back to the issuing CacheNode (counter increments only on successful write responses). CacheNodes store (value, commitCounter) per key. Additionally, introduce a lightweight peer-to-peer Gossip machine: after receiving a committed write, the writer pod asynchronously gossips (key, value, commitCounter) to its peer CacheNode(s). A CacheNode may serve a read from its local cache without storage touch only if (a) it has a cached entry and (b) it has not observed, via any later gossiped tuple or local write ack, a higher commitCounter for that key; practically, maintain lastSeenCounter[key] and serve only when cache.counter == lastSeenCounter[key]. This preserves LSI because only commit-ack-stamped counters authorize reads, and any later commit (from any pod) will be learned via gossip before serving the next read. It reduces round trips under write-heavy, cross-pod workloads because peers quickly converge on latest committed values without hitting storage or proxy for each read.",
+        "what_to_optimize": "Boost round_trip_efficiency by avoiding proxy on post-commit reads across pods; maintain safety_score by requiring equality to lastSeen commitCounter; improve cache_hit_rate via rapid dissemination of committed values.",
+        "cautions": "Ensure commitCounter is generated and advanced exclusively at the proxy on successful write responses; do not attempt to estimate or reorder at pods. Gossip is best-effort but must be applied monotonically (ignore stale tuples). Never serve from cache if there is any local knowledge of a higher counter (including pending local writes). Maintain request-ID integrity and all proxy monitor events unchanged.",
+        "approach_type": "scipy.signal.medfilt",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      },
+      {
+        "idea": "Proxy-centered directory with invalidate-before-write (synchronous acks) enabling zero-RTT cache reads",
+        "description": "Make StorageProxy a directory for per-key cache coherence. On eStorageWrite enqueue, the proxy first sends eInv(k, invId) to all CacheNodes holding key k in Shared state and waits for eInvAck(invId) from each, then forwards the write to storage. After eStorageWriteResp, the proxy multicasts eCommitUpdate(k, value, ver) so caches can install the committed value and enter Shared state. CacheNode serves eClientRead from local cache only when its per-key state is Shared and no local invalidation is pending (i.e., it has not seen eInv for that key without having acked). Reads then require 0 trips to proxy and 0 storage access, yet satisfy LSI because proxy never allows a write to commit until all prior Shared replicas have been invalidated. This is not a lease/ownership scheme; there is no primary pod and no timeouts, just a synchronous invalidate barrier before each write. Maintain per-key directory membership at the proxy compactly as a bitset/set of pods, and announce monitor events unchanged for storage-bound steps.",
+        "what_to_optimize": "safety_score first (strict barrier before writes), then round_trip_efficiency by making reads zero-RTT to proxy and zero storage trips; cache_hit_rate by keeping keys in Shared after commit pushes",
+        "cautions": "Rely only on single-sender FIFO from proxy to each cache: send all eCommitUpdate before any subsequent eInv to the same cache to keep ordering simple. Do not proceed to storage until all invalidation acks are received; otherwise LSI can be violated. Ensure that all write traffic still goes through the proxy queue and that eMonitorProxy* announcements are preserved for real storage sends/responses. Use explicit invId/reqId to match acks, and handle races where a read arrives concurrently with an invalidate: serving the old value is safe because the write has not been forwarded to storage until after ack.",
+        "approach_type": "networkx.algorithms.approximation.min_dom_set",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      },
+      {
+        "idea": "Quiescent-watermark push from proxy plus 1-RTT metadata-only validation fallback",
+        "description": "Have the proxy maintain per-key lastCommittedSeq and a pendingWrites counter. After dequeuing a write and upon receiving its eStorageWriteResp, increment lastCommittedSeq(k) and push eCommitUpdate(k, value, seq) to caches. When the per-key pendingWrites counter drops to zero, also push eQuiescent(k, seq=lastCommittedSeq(k)). A CacheNode serves a read from cache immediately if it has (cache.seq == lastCommittedSeq_cached) and has already processed eQuiescent for that seq (i.e., a stable point with no in-flight writes). If uncertain (missing quiescent or sequence mismatch), it issues a lightweight eProxyMetaRead(k) to the proxy (no storage touch) to fetch current lastCommittedSeq; it serves locally if its cache.seq matches, else it falls back to normal storage read via proxy. This preserves LSI because local-serve only happens at known quiescent seqs or after fresh seq confirmation, yet significantly cuts storage trips and often avoids any proxy RT when quiescent has been observed.",
+        "what_to_optimize": "Reduce storage reads (round_trip_efficiency) while keeping LSI via quiescent barriers; opportunistically raise cache_hit_rate by serving instantly at quiescent points; safety_score stays maximal by using explicit sequence matches",
+        "cautions": "Ensure proxy emits eCommitUpdate before eQuiescent for the same key and that both come from the same sender to exploit FIFO delivery. Never serve locally on a mere commit update without an accompanying quiescent or confirmed seq, to avoid racing a new write. Keep eProxyMetaRead a pure proxy-local lookup that still triggers eMonitorProxyRequestIssued/ResponseDelivered but does not enqueue to storage.",
+        "approach_type": "scipy.optimize.linprog",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      },
+      {
+        "idea": "Two-phase windowed commit broadcasting (color epochs) to enable local reads inside stable windows",
+        "description": "Partition time into per-key colored epochs managed by the proxy. The proxy assigns each forwarded write to the current color C(k) and, after all writes of color C(k) commit, broadcasts eColorStable(k, color=C, value=lastValue, ver) to caches and advances C(k) to the next color. Caches mark keys as Stable(color=C) upon receiving eColorStable and can serve reads locally as long as the key remains in that stable color and no eColorAdvance has been received. New writes first trigger eColorAdvance(k, nextColor), flipping caches to Unstable for that key before any storage write is forwarded. This creates clear stable windows where the cache view is provably equal to storage\u2019s latest committed state. Reads during stable windows are 0-RTT to proxy and 0 storage; reads outside use normal proxy/storage path.",
+        "what_to_optimize": "Increase periods of safe, zero-RTT local reads (cache_hit_rate, round_trip_efficiency) by batching commits into stable windows; maintain strict correctness by advancing color before forwarding any new writes",
+        "cautions": "All color-control messages (eColorAdvance, eColorStable) must be sent by the proxy and rely on per-sender FIFO to each cache. Do not issue eStorageWrite for a key until eColorAdvance has been sent for that key, preventing local serves from overlapping with new writes. Keep metadata compact: per-key small integer color and a bit indicating Stable vs Unstable. Ensure monitor events still reflect only storage-facing operations.",
+        "approach_type": "numpy.bincount",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      },
+      {
+        "idea": "Proxy-authoritative read service with LRU-bounded last-commit map",
+        "description": "Make StorageProxy the single source of truth for latest committed values since all writes traverse it. Maintain a per-key lastCommittedValue map and serve reads directly at the proxy when there is no inflight write for that key. Implement the map as an LRU to keep metadata compact and evict cold keys. On eStorageWriteResp, update the lastCommittedValue and release any queued reads. On eStorageRead from a CacheNode, check for an inflight write barrier first; if none and the key exists in lastCommittedValue, immediately respond to the caller without touching storage; otherwise, enqueue as usual. This preserves LSI because the proxy only serves from its cache after a storage commit. Keep per-key small state: hasInflightWrite, waitingReaders (for fan-out), and an OrderedDict for the LRU store. This replaces broadcast or lease schemes with on-demand authoritative answers at the proxy, reducing storage round trips under mixed workloads.",
+        "what_to_optimize": "Maximize safety_score by only serving from proxy after write commits; improve round_trip_efficiency by eliminating storage hops for cacheable reads; improve cache_hit_rate via LRU reuse of hot keys.",
+        "cautions": "Never serve from proxy when there is an inflight write for that key; ensure eMonitorProxyEnqueue/Forward/Hold/ResponseDelivered are still announced correctly for operations that do hit storage; bound memory with LRU while avoiding evicting keys that have queued waiters; maintain request IDs so multiple concurrent readers of the same key are replied correctly and only once.",
+        "approach_type": "collections.OrderedDict",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      },
+      {
+        "idea": "Priority proxy scheduler: write-collapsing and write-priority using a min-heap",
+        "description": "Install a two-lane scheduler at StorageProxy that prioritizes writes and collapses multiple pending writes for the same key into the last-one-wins before forwarding. Use a heap keyed by (priority, enqueue_seq) where writes get higher priority than reads, and within a key retain only the newest write, canceling older queued writes for that key. For reads, if a newer write is pending for the same key, keep the read queued behind that write; once the write commits, serve the read from the proxy\u2019s lastCommittedValue fast path without hitting storage. This reduces redundant storage writes and read trips during write bursts. Maintain a side map key->latestPendingWriteOpId to allow O(1) overwrite of older entries and prevent duplicates from being forwarded.",
+        "what_to_optimize": "Improve round_trip_efficiency by collapsing redundant writes and shifting reads to post-commit proxy-serve; maintain safety_score by serializing per-key and never serving reads across an inflight write barrier; indirectly increase cache_hit_rate by keeping proxy lastCommitted hot for read-after-write.",
+        "cautions": "Ensure correctness of collapse: only the newest write per key is forwarded; respond to clients of collapsed writes consistently (e.g., all receive success/fail based on the forwarded write); preserve the proxy\u2019s nondeterministic forward/hold semantics by letting the heap select but still emit eMonitorProxyHold on no-op steps; maintain per-key inflight queues for matching eStorageWriteResp and read fan-out.",
+        "approach_type": "heapq.heappush",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      },
+      {
+        "idea": "Proxy-stamped per-key commit counters with on-demand validation from pods",
+        "description": "Have StorageProxy maintain a per-key monotonically increasing commitCounter that increments on every successful eStorageWriteResp. CacheNodes cache (value, counter) when they see a write response for their own write or after a storage read. On eClientRead, a CacheNode sends a lightweight validate request carrying its cached counter; the proxy compares to its authoritative counter: if equal, it immediately returns the cached value (no storage trip); if higher at the proxy, it replies with the latest value; if a write is inflight, the proxy queues the read until commit, then replies with the fresh value. This gives a safe, single-RTT validation path without needing to push state or compare raw values, and it works even under shard movement because the single proxy serializes all storage traffic.",
+        "what_to_optimize": "Maximize safety_score by only accepting equality to the proxy\u2019s authoritative counter; improve round_trip_efficiency by turning many reads into single proxy round trips; increase cache_hit_rate by allowing CacheNodes to reuse their local cached values when counters match.",
+        "cautions": "Counters are proxy-local truth; never guess them at CacheNodes. Increment strictly on successful write commits and handle counter creation on first write. For keys with no known counter at proxy or CacheNode, fall back to storage read. Ensure requests carry request IDs and counters are per-key to avoid cross-key contamination. Maintain monitor announcements even for validate-only fast paths (ResponseDelivered with isWrite=false).",
+        "approach_type": "itertools.accumulate",
+        "uses": 2,
+        "starting_score": 0.8233333333333333,
+        "ending_score": 0.8233333333333333,
+        "score_improvement": 0.0,
+        "outcome": "FAILED"
+      }
+    ],
+    "best_score_at_paradigm_gen": 0.8233333333333333,
+    "best_score_during_paradigm": 0.8499999999999999
+  }
+}

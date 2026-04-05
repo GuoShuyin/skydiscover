@@ -1,0 +1,10 @@
+<Project>
+  <ProjectName>LookasideCache</ProjectName>
+  <InputFiles>
+    <PFile>./PSrc/Machines.p</PFile>
+    <PFile>./PSpec/Spec.p</PFile>
+    <PFile>./PTst/TestDriver.p</PFile>
+    <PFile>./PTst/TestScript.p</PFile>
+  </InputFiles>
+  <OutputDir>./PGenerated</OutputDir>
+</Project>

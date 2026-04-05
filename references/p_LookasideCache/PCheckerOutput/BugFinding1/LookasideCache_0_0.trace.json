@@ -1,0 +1,3326 @@
+[
+  {
+    "type": "CreateMonitor",
+    "details": {
+      "log": "LSISafety was created.",
+      "payload": "null",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 1
+      }
+    }
+  },
+  {
+    "type": "MonitorStateTransition",
+    "details": {
+      "log": "LSISafety enters state \u0027Watching\u0027.",
+      "state": "Watching",
+      "payload": "null",
+      "isEntry": true,
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 2
+      }
+    }
+  },
+  {
+    "type": "CreateStateMachine",
+    "details": {
+      "log": "TestDriver(1) was created by task \u00272\u0027.",
+      "id": "TestDriver(1)",
+      "payload": "null",
+      "clock": {
+        "TestDriver(1)": 1
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "TestDriver(1) enters state \u0027Init\u0027.",
+      "id": "TestDriver(1)",
+      "state": "Init",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "TestDriver(1)": 2
+      }
+    }
+  },
+  {
+    "type": "CreateStateMachine",
+    "details": {
+      "log": "SimpleTiDB(2) was created by TestDriver(1).",
+      "id": "SimpleTiDB(2)",
+      "creatorName": "TestDriver(1)",
+      "creatorType": "TestDriver",
+      "payload": "null",
+      "clock": {
+        "SimpleTiDB(2)": 1
+      }
+    }
+  },
+  {
+    "type": "CreateStateMachine",
+    "details": {
+      "log": "LookasideCache(3) was created by TestDriver(1).",
+      "id": "LookasideCache(3)",
+      "creatorName": "TestDriver(1)",
+      "creatorType": "TestDriver",
+      "payload": "null",
+      "clock": {
+        "LookasideCache(3)": 1
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "LookasideCache(3) enters state \u0027Init\u0027.",
+      "id": "LookasideCache(3)",
+      "state": "Init",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "LookasideCache(3)": 2
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "LookasideCache(3) is transitioning from state \u0027Init\u0027 to state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "startState": "Init",
+      "endState": "Ready",
+      "payload": "null",
+      "clock": {
+        "LookasideCache(3)": 3
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "LookasideCache(3) exits state \u0027Init\u0027.",
+      "id": "LookasideCache(3)",
+      "state": "Init",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "LookasideCache(3)": 4
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "LookasideCache(3) enters state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "state": "Ready",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "LookasideCache(3)": 5
+      }
+    }
+  },
+  {
+    "type": "CreateStateMachine",
+    "details": {
+      "log": "Client(4) was created by TestDriver(1).",
+      "id": "Client(4)",
+      "creatorName": "TestDriver(1)",
+      "creatorType": "TestDriver",
+      "payload": "null",
+      "clock": {
+        "Client(4)": 1
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) enters state \u0027Init\u0027.",
+      "id": "Client(4)",
+      "state": "Init",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(4)": 2
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(4) is transitioning from state \u0027Init\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "startState": "Init",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(4)": 3
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) exits state \u0027Init\u0027.",
+      "id": "Client(4)",
+      "state": "Init",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(4)": 4
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) enters state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(4)": 5
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 0: READ  key=40",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "SimpleTiDB(2) enters state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "state": "Ready",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "SimpleTiDB(2)": 2
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 in state \u0027Issuing\u0027 sent event \u0027eRead with payload (\u003Cclient:Client(4), key:40, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eRead",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(4)",
+        "key": 40
+      },
+      "sender": "Client(4)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(4)": 6
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eRead with payload (\u003Cclient:Client(4), key:40, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eRead",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(4)",
+        "key": 40
+      },
+      "clock": {
+        "LookasideCache(3)": 6,
+        "Client(4)": 6
+      }
+    }
+  },
+  {
+    "type": "CreateStateMachine",
+    "details": {
+      "log": "Client(5) was created by TestDriver(1).",
+      "id": "Client(5)",
+      "creatorName": "TestDriver(1)",
+      "creatorType": "TestDriver",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 1
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "TestDriver(1) is transitioning from state \u0027Init\u0027 to state \u0027Done\u0027.",
+      "id": "TestDriver(1)",
+      "startState": "Init",
+      "endState": "Done",
+      "payload": "null",
+      "clock": {
+        "TestDriver(1)": 3
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "TestDriver(1) exits state \u0027Init\u0027.",
+      "id": "TestDriver(1)",
+      "state": "Init",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "TestDriver(1)": 4
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "TestDriver(1) enters state \u0027Done\u0027.",
+      "id": "TestDriver(1)",
+      "state": "Done",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "TestDriver(1)": 5
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Init\u0027.",
+      "id": "Client(5)",
+      "state": "Init",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 2
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(5) is transitioning from state \u0027Init\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "startState": "Init",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 3
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) exits state \u0027Init\u0027.",
+      "id": "Client(5)",
+      "state": "Init",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(5)": 4
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 5
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 1: READ  key=41",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eDbRead with payload (\u003Clc:LookasideCache(3), key:40, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eDbRead",
+      "state": "Ready",
+      "payload": {
+        "lc": "LookasideCache(3)",
+        "key": 40
+      },
+      "sender": "LookasideCache(3)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 7,
+        "Client(4)": 6
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eDbRead with payload (\u003Clc:LookasideCache(3), key:40, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eDbRead",
+      "state": "Ready",
+      "payload": {
+        "lc": "LookasideCache(3)",
+        "key": 40
+      },
+      "clock": {
+        "SimpleTiDB(2)": 3,
+        "LookasideCache(3)": 7,
+        "Client(4)": 6
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 in state \u0027Issuing\u0027 sent event \u0027eRead with payload (\u003Cclient:Client(5), key:41, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eRead",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(5)",
+        "key": 41
+      },
+      "sender": "Client(5)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(5)": 6
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eDbReadResp with payload (\u003Ckey:40, value:0, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eDbReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "value": 0
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 4,
+        "LookasideCache(3)": 7,
+        "Client(4)": 6
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eRead with payload (\u003Cclient:Client(5), key:41, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eRead",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(5)",
+        "key": 41
+      },
+      "clock": {
+        "LookasideCache(3)": 8,
+        "Client(4)": 6,
+        "Client(5)": 6
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eDbRead with payload (\u003Clc:LookasideCache(3), key:41, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eDbRead",
+      "state": "Ready",
+      "payload": {
+        "lc": "LookasideCache(3)",
+        "key": 41
+      },
+      "sender": "LookasideCache(3)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 9,
+        "Client(4)": 6,
+        "Client(5)": 6
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eDbReadResp with payload (\u003Ckey:40, value:0, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eDbReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "value": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 10,
+        "Client(4)": 6,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 4
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eDbRead with payload (\u003Clc:LookasideCache(3), key:41, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eDbRead",
+      "state": "Ready",
+      "payload": {
+        "lc": "LookasideCache(3)",
+        "key": 41
+      },
+      "clock": {
+        "SimpleTiDB(2)": 5,
+        "LookasideCache(3)": 9,
+        "Client(4)": 6,
+        "Client(5)": 6
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eDbReadResp with payload (\u003Ckey:41, value:0, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eDbReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 41,
+        "value": 0
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 6,
+        "LookasideCache(3)": 9,
+        "Client(4)": 6,
+        "Client(5)": 6
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eReadResp with payload (\u003Ckey:40, value:0, \u003E)\u0027 to \u0027Client(4)\u0027.",
+      "event": "eReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "value": 0
+      },
+      "sender": "LookasideCache(3)",
+      "target": "Client(4)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 11,
+        "Client(4)": 6,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 4
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eDbRefresh with payload (\u003Clc:LookasideCache(3), key:40, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eDbRefresh",
+      "state": "Ready",
+      "payload": {
+        "lc": "LookasideCache(3)",
+        "key": 40
+      },
+      "sender": "LookasideCache(3)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 12,
+        "Client(4)": 6,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 4
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eDbRefresh with payload (\u003Clc:LookasideCache(3), key:40, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eDbRefresh",
+      "state": "Ready",
+      "payload": {
+        "lc": "LookasideCache(3)",
+        "key": 40
+      },
+      "clock": {
+        "SimpleTiDB(2)": 7,
+        "LookasideCache(3)": 12,
+        "Client(4)": 6,
+        "Client(5)": 6
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eDbRefreshResp with payload (\u003Ckey:40, value:0, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eDbRefreshResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "value": 0
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 8,
+        "LookasideCache(3)": 12,
+        "Client(4)": 6,
+        "Client(5)": 6
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 dequeued event \u0027eReadResp with payload (\u003Ckey:40, value:0, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "event": "eReadResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 40,
+        "value": 0
+      },
+      "clock": {
+        "Client(4)": 7,
+        "LookasideCache(3)": 11,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 4
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(4) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(4)": 8,
+        "LookasideCache(3)": 11,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 4
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) exits state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(4)": 9,
+        "LookasideCache(3)": 11,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 4
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) enters state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(4)": 10,
+        "LookasideCache(3)": 11,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 4
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 0: READ  key=40",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 in state \u0027Issuing\u0027 sent event \u0027eRead with payload (\u003Cclient:Client(4), key:40, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eRead",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(4)",
+        "key": 40
+      },
+      "sender": "Client(4)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(4)": 11,
+        "LookasideCache(3)": 11,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 4
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eDbReadResp with payload (\u003Ckey:41, value:0, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eDbReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 41,
+        "value": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 13,
+        "Client(4)": 6,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 6
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eReadResp with payload (\u003Ckey:41, value:0, \u003E)\u0027 to \u0027Client(5)\u0027.",
+      "event": "eReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 41,
+        "value": 0
+      },
+      "sender": "LookasideCache(3)",
+      "target": "Client(5)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 6
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eDbRefreshResp with payload (\u003Ckey:40, value:0, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eDbRefreshResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "value": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 15,
+        "Client(4)": 6,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 dequeued event \u0027eReadResp with payload (\u003Ckey:41, value:0, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "event": "eReadResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 41,
+        "value": 0
+      },
+      "clock": {
+        "Client(5)": 7,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 6
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(5) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 8,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 6
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) exits state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(5)": 9,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 6
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 10,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 6
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 1: WRITE key=40 val=101",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 in state \u0027Issuing\u0027 sent event \u0027eWrite with payload (\u003Cclient:Client(5), key:40, value:101, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eWrite",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(5)",
+        "key": 40,
+        "value": 101
+      },
+      "sender": "Client(5)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(5)": 11,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 6
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eRead with payload (\u003Cclient:Client(4), key:40, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eRead",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(4)",
+        "key": 40
+      },
+      "clock": {
+        "LookasideCache(3)": 16,
+        "Client(4)": 11,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "LookasideCache(3) announced event eMonitorCacheHit with payload \u003Ckey:40, value:0, podId:0, \u003E.",
+      "id": "LookasideCache(3)",
+      "event": "eMonitorCacheHit",
+      "payload": {
+        "key": 40,
+        "value": 0,
+        "podId": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 17,
+        "Client(4)": 11,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorCacheHit with payload (\u003Ckey:40, value:0, podId:0, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorCacheHit",
+      "state": "Watching",
+      "payload": {
+        "key": 40,
+        "value": 0,
+        "podId": 0
+      },
+      "sender": "LookasideCache(3)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 3,
+        "LookasideCache(3)": 17,
+        "Client(4)": 11,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eWrite with payload (\u003Cclient:Client(5), key:40, value:101, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eWrite",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(5)",
+        "key": 40,
+        "value": 101
+      },
+      "clock": {
+        "SimpleTiDB(2)": 9,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "Client(5)": 11
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "SimpleTiDB(2) announced event eMonitorDbWrite with payload \u003Ckey:40, value:101, \u003E.",
+      "id": "SimpleTiDB(2)",
+      "event": "eMonitorDbWrite",
+      "payload": {
+        "key": 40,
+        "value": 101
+      },
+      "clock": {
+        "SimpleTiDB(2)": 10,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "Client(5)": 11
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorDbWrite with payload (\u003Ckey:40, value:101, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorDbWrite",
+      "state": "Watching",
+      "payload": {
+        "key": 40,
+        "value": 101
+      },
+      "sender": "SimpleTiDB(2)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 4,
+        "LookasideCache(3)": 17,
+        "Client(4)": 11,
+        "Client(5)": 11,
+        "SimpleTiDB(2)": 10
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eReadResp with payload (\u003Ckey:40, value:0, \u003E)\u0027 to \u0027Client(4)\u0027.",
+      "event": "eReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "value": 0
+      },
+      "sender": "LookasideCache(3)",
+      "target": "Client(4)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 18,
+        "Client(4)": 11,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eWriteResp with payload (\u003Ckey:40, success:True, \u003E)\u0027 to \u0027Client(5)\u0027.",
+      "event": "eWriteResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "success": true
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "Client(5)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 11,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "Client(5)": 11
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 dequeued event \u0027eWriteResp with payload (\u003Ckey:40, success:True, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "event": "eWriteResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 40,
+        "success": true
+      },
+      "clock": {
+        "Client(5)": 12,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 11
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(5) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 13,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 11
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) exits state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(5)": 14,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 11
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 15,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 11
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 1: READ  key=42",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 in state \u0027Issuing\u0027 sent event \u0027eRead with payload (\u003Cclient:Client(5), key:42, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eRead",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(5)",
+        "key": 42
+      },
+      "sender": "Client(5)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(5)": 16,
+        "LookasideCache(3)": 14,
+        "Client(4)": 6,
+        "SimpleTiDB(2)": 11
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 dequeued event \u0027eReadResp with payload (\u003Ckey:40, value:0, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "event": "eReadResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 40,
+        "value": 0
+      },
+      "clock": {
+        "Client(4)": 12,
+        "LookasideCache(3)": 18,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(4) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(4)": 13,
+        "LookasideCache(3)": 18,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) exits state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(4)": 14,
+        "LookasideCache(3)": 18,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) enters state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(4)": 15,
+        "LookasideCache(3)": 18,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 0: READ  key=41",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eRead with payload (\u003Cclient:Client(5), key:42, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eRead",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(5)",
+        "key": 42
+      },
+      "clock": {
+        "LookasideCache(3)": 19,
+        "Client(4)": 11,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 11
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eDbRead with payload (\u003Clc:LookasideCache(3), key:42, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eDbRead",
+      "state": "Ready",
+      "payload": {
+        "lc": "LookasideCache(3)",
+        "key": 42
+      },
+      "sender": "LookasideCache(3)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 20,
+        "Client(4)": 11,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 11
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eDbRead with payload (\u003Clc:LookasideCache(3), key:42, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eDbRead",
+      "state": "Ready",
+      "payload": {
+        "lc": "LookasideCache(3)",
+        "key": 42
+      },
+      "clock": {
+        "SimpleTiDB(2)": 12,
+        "LookasideCache(3)": 20,
+        "Client(4)": 11,
+        "Client(5)": 16
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eDbReadResp with payload (\u003Ckey:42, value:0, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eDbReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 42,
+        "value": 0
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 13,
+        "LookasideCache(3)": 20,
+        "Client(4)": 11,
+        "Client(5)": 16
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eDbReadResp with payload (\u003Ckey:42, value:0, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eDbReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 42,
+        "value": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 21,
+        "Client(4)": 11,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eReadResp with payload (\u003Ckey:42, value:0, \u003E)\u0027 to \u0027Client(5)\u0027.",
+      "event": "eReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 42,
+        "value": 0
+      },
+      "sender": "LookasideCache(3)",
+      "target": "Client(5)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 in state \u0027Issuing\u0027 sent event \u0027eRead with payload (\u003Cclient:Client(4), key:41, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eRead",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(4)",
+        "key": 41
+      },
+      "sender": "Client(4)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(4)": 16,
+        "LookasideCache(3)": 18,
+        "Client(5)": 6,
+        "SimpleTiDB(2)": 8
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 dequeued event \u0027eReadResp with payload (\u003Ckey:42, value:0, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "event": "eReadResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 42,
+        "value": 0
+      },
+      "clock": {
+        "Client(5)": 17,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(5) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 18,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) exits state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(5)": 19,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 20,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 1: WRITE key=40 val=103",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 in state \u0027Issuing\u0027 sent event \u0027eWrite with payload (\u003Cclient:Client(5), key:40, value:103, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eWrite",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(5)",
+        "key": 40,
+        "value": 103
+      },
+      "sender": "Client(5)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(5)": 21,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eWrite with payload (\u003Cclient:Client(5), key:40, value:103, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eWrite",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(5)",
+        "key": 40,
+        "value": 103
+      },
+      "clock": {
+        "SimpleTiDB(2)": 14,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "Client(5)": 21
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "SimpleTiDB(2) announced event eMonitorDbWrite with payload \u003Ckey:40, value:103, \u003E.",
+      "id": "SimpleTiDB(2)",
+      "event": "eMonitorDbWrite",
+      "payload": {
+        "key": 40,
+        "value": 103
+      },
+      "clock": {
+        "SimpleTiDB(2)": 15,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "Client(5)": 21
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorDbWrite with payload (\u003Ckey:40, value:103, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorDbWrite",
+      "state": "Watching",
+      "payload": {
+        "key": 40,
+        "value": 103
+      },
+      "sender": "SimpleTiDB(2)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 5,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 15
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eRead with payload (\u003Cclient:Client(4), key:41, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eRead",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(4)",
+        "key": 41
+      },
+      "clock": {
+        "LookasideCache(3)": 23,
+        "Client(4)": 16,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "LookasideCache(3) announced event eMonitorCacheHit with payload \u003Ckey:41, value:0, podId:0, \u003E.",
+      "id": "LookasideCache(3)",
+      "event": "eMonitorCacheHit",
+      "payload": {
+        "key": 41,
+        "value": 0,
+        "podId": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 24,
+        "Client(4)": 16,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorCacheHit with payload (\u003Ckey:41, value:0, podId:0, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorCacheHit",
+      "state": "Watching",
+      "payload": {
+        "key": 41,
+        "value": 0,
+        "podId": 0
+      },
+      "sender": "LookasideCache(3)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 6,
+        "LookasideCache(3)": 24,
+        "Client(4)": 16,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 15
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eReadResp with payload (\u003Ckey:41, value:0, \u003E)\u0027 to \u0027Client(4)\u0027.",
+      "event": "eReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 41,
+        "value": 0
+      },
+      "sender": "LookasideCache(3)",
+      "target": "Client(4)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 25,
+        "Client(4)": 16,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 dequeued event \u0027eReadResp with payload (\u003Ckey:41, value:0, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "event": "eReadResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 41,
+        "value": 0
+      },
+      "clock": {
+        "Client(4)": 17,
+        "LookasideCache(3)": 25,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(4) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(4)": 18,
+        "LookasideCache(3)": 25,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) exits state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(4)": 19,
+        "LookasideCache(3)": 25,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) enters state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(4)": 20,
+        "LookasideCache(3)": 25,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 0: WRITE key=40 val=3",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 in state \u0027Issuing\u0027 sent event \u0027eWrite with payload (\u003Cclient:Client(4), key:40, value:3, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eWrite",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(4)",
+        "key": 40,
+        "value": 3
+      },
+      "sender": "Client(4)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(4)": 21,
+        "LookasideCache(3)": 25,
+        "Client(5)": 16,
+        "SimpleTiDB(2)": 13
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eWriteResp with payload (\u003Ckey:40, success:True, \u003E)\u0027 to \u0027Client(5)\u0027.",
+      "event": "eWriteResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "success": true
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "Client(5)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 16,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "Client(5)": 21
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 dequeued event \u0027eWriteResp with payload (\u003Ckey:40, success:True, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "event": "eWriteResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 40,
+        "success": true
+      },
+      "clock": {
+        "Client(5)": 22,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 16
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(5) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 23,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 16
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) exits state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(5)": 24,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 16
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 25,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 16
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 1: WRITE key=41 val=104",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eWrite with payload (\u003Cclient:Client(4), key:40, value:3, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eWrite",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(4)",
+        "key": 40,
+        "value": 3
+      },
+      "clock": {
+        "SimpleTiDB(2)": 17,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "Client(5)": 21
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "SimpleTiDB(2) announced event eMonitorDbWrite with payload \u003Ckey:40, value:3, \u003E.",
+      "id": "SimpleTiDB(2)",
+      "event": "eMonitorDbWrite",
+      "payload": {
+        "key": 40,
+        "value": 3
+      },
+      "clock": {
+        "SimpleTiDB(2)": 18,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "Client(5)": 21
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorDbWrite with payload (\u003Ckey:40, value:3, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorDbWrite",
+      "state": "Watching",
+      "payload": {
+        "key": 40,
+        "value": 3
+      },
+      "sender": "SimpleTiDB(2)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 7,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 18
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 in state \u0027Issuing\u0027 sent event \u0027eWrite with payload (\u003Cclient:Client(5), key:41, value:104, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eWrite",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(5)",
+        "key": 41,
+        "value": 104
+      },
+      "sender": "Client(5)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(5)": 26,
+        "LookasideCache(3)": 22,
+        "Client(4)": 11,
+        "SimpleTiDB(2)": 16
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eWriteResp with payload (\u003Ckey:40, success:True, \u003E)\u0027 to \u0027Client(4)\u0027.",
+      "event": "eWriteResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "success": true
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "Client(4)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 19,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "Client(5)": 21
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 dequeued event \u0027eWriteResp with payload (\u003Ckey:40, success:True, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "event": "eWriteResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 40,
+        "success": true
+      },
+      "clock": {
+        "Client(4)": 22,
+        "LookasideCache(3)": 25,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(4) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(4)": 23,
+        "LookasideCache(3)": 25,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) exits state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(4)": 24,
+        "LookasideCache(3)": 25,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) enters state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(4)": 25,
+        "LookasideCache(3)": 25,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 0: READ  key=41",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 in state \u0027Issuing\u0027 sent event \u0027eRead with payload (\u003Cclient:Client(4), key:41, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eRead",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(4)",
+        "key": 41
+      },
+      "sender": "Client(4)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(4)": 26,
+        "LookasideCache(3)": 25,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eRead with payload (\u003Cclient:Client(4), key:41, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eRead",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(4)",
+        "key": 41
+      },
+      "clock": {
+        "LookasideCache(3)": 26,
+        "Client(4)": 26,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "LookasideCache(3) announced event eMonitorCacheHit with payload \u003Ckey:41, value:0, podId:0, \u003E.",
+      "id": "LookasideCache(3)",
+      "event": "eMonitorCacheHit",
+      "payload": {
+        "key": 41,
+        "value": 0,
+        "podId": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 27,
+        "Client(4)": 26,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorCacheHit with payload (\u003Ckey:41, value:0, podId:0, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorCacheHit",
+      "state": "Watching",
+      "payload": {
+        "key": 41,
+        "value": 0,
+        "podId": 0
+      },
+      "sender": "LookasideCache(3)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 8,
+        "LookasideCache(3)": 27,
+        "Client(4)": 26,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eReadResp with payload (\u003Ckey:41, value:0, \u003E)\u0027 to \u0027Client(4)\u0027.",
+      "event": "eReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 41,
+        "value": 0
+      },
+      "sender": "LookasideCache(3)",
+      "target": "Client(4)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 28,
+        "Client(4)": 26,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eWrite with payload (\u003Cclient:Client(5), key:41, value:104, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eWrite",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(5)",
+        "key": 41,
+        "value": 104
+      },
+      "clock": {
+        "SimpleTiDB(2)": 20,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "Client(5)": 26
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "SimpleTiDB(2) announced event eMonitorDbWrite with payload \u003Ckey:41, value:104, \u003E.",
+      "id": "SimpleTiDB(2)",
+      "event": "eMonitorDbWrite",
+      "payload": {
+        "key": 41,
+        "value": 104
+      },
+      "clock": {
+        "SimpleTiDB(2)": 21,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "Client(5)": 26
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorDbWrite with payload (\u003Ckey:41, value:104, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorDbWrite",
+      "state": "Watching",
+      "payload": {
+        "key": 41,
+        "value": 104
+      },
+      "sender": "SimpleTiDB(2)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 9,
+        "LookasideCache(3)": 27,
+        "Client(4)": 26,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 21
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eWriteResp with payload (\u003Ckey:41, success:True, \u003E)\u0027 to \u0027Client(5)\u0027.",
+      "event": "eWriteResp",
+      "state": "Ready",
+      "payload": {
+        "key": 41,
+        "success": true
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "Client(5)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 22,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "Client(5)": 26
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 dequeued event \u0027eWriteResp with payload (\u003Ckey:41, success:True, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "event": "eWriteResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 41,
+        "success": true
+      },
+      "clock": {
+        "Client(5)": 27,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(5) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 28,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) exits state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(5)": 29,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 30,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 1: READ  key=42",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 in state \u0027Issuing\u0027 sent event \u0027eRead with payload (\u003Cclient:Client(5), key:42, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eRead",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(5)",
+        "key": 42
+      },
+      "sender": "Client(5)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(5)": 31,
+        "LookasideCache(3)": 25,
+        "Client(4)": 21,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eRead with payload (\u003Cclient:Client(5), key:42, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eRead",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(5)",
+        "key": 42
+      },
+      "clock": {
+        "LookasideCache(3)": 29,
+        "Client(4)": 26,
+        "Client(5)": 31,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "LookasideCache(3) announced event eMonitorCacheHit with payload \u003Ckey:42, value:0, podId:0, \u003E.",
+      "id": "LookasideCache(3)",
+      "event": "eMonitorCacheHit",
+      "payload": {
+        "key": 42,
+        "value": 0,
+        "podId": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 30,
+        "Client(4)": 26,
+        "Client(5)": 31,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorCacheHit with payload (\u003Ckey:42, value:0, podId:0, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorCacheHit",
+      "state": "Watching",
+      "payload": {
+        "key": 42,
+        "value": 0,
+        "podId": 0
+      },
+      "sender": "LookasideCache(3)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 10,
+        "LookasideCache(3)": 30,
+        "Client(4)": 26,
+        "Client(5)": 31,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eReadResp with payload (\u003Ckey:42, value:0, \u003E)\u0027 to \u0027Client(5)\u0027.",
+      "event": "eReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 42,
+        "value": 0
+      },
+      "sender": "LookasideCache(3)",
+      "target": "Client(5)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 31,
+        "Client(4)": 26,
+        "Client(5)": 31,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 dequeued event \u0027eReadResp with payload (\u003Ckey:42, value:0, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "event": "eReadResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 42,
+        "value": 0
+      },
+      "clock": {
+        "Client(5)": 32,
+        "LookasideCache(3)": 31,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(5) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 33,
+        "LookasideCache(3)": 31,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) exits state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(5)": 34,
+        "LookasideCache(3)": 31,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 35,
+        "LookasideCache(3)": 31,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 1: READ  key=42",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 in state \u0027Issuing\u0027 sent event \u0027eRead with payload (\u003Cclient:Client(5), key:42, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eRead",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(5)",
+        "key": 42
+      },
+      "sender": "Client(5)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(5)": 36,
+        "LookasideCache(3)": 31,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 dequeued event \u0027eReadResp with payload (\u003Ckey:41, value:0, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "event": "eReadResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 41,
+        "value": 0
+      },
+      "clock": {
+        "Client(4)": 27,
+        "LookasideCache(3)": 28,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(4) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(4)": 28,
+        "LookasideCache(3)": 28,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) exits state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(4)": 29,
+        "LookasideCache(3)": 28,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) enters state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(4)": 30,
+        "LookasideCache(3)": 28,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 0: WRITE key=41 val=5",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 in state \u0027Issuing\u0027 sent event \u0027eWrite with payload (\u003Cclient:Client(4), key:41, value:5, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eWrite",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(4)",
+        "key": 41,
+        "value": 5
+      },
+      "sender": "Client(4)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(4)": 31,
+        "LookasideCache(3)": 28,
+        "Client(5)": 21,
+        "SimpleTiDB(2)": 19
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eWrite with payload (\u003Cclient:Client(4), key:41, value:5, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eWrite",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(4)",
+        "key": 41,
+        "value": 5
+      },
+      "clock": {
+        "SimpleTiDB(2)": 23,
+        "LookasideCache(3)": 28,
+        "Client(4)": 31,
+        "Client(5)": 26
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "SimpleTiDB(2) announced event eMonitorDbWrite with payload \u003Ckey:41, value:5, \u003E.",
+      "id": "SimpleTiDB(2)",
+      "event": "eMonitorDbWrite",
+      "payload": {
+        "key": 41,
+        "value": 5
+      },
+      "clock": {
+        "SimpleTiDB(2)": 24,
+        "LookasideCache(3)": 28,
+        "Client(4)": 31,
+        "Client(5)": 26
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorDbWrite with payload (\u003Ckey:41, value:5, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorDbWrite",
+      "state": "Watching",
+      "payload": {
+        "key": 41,
+        "value": 5
+      },
+      "sender": "SimpleTiDB(2)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 11,
+        "LookasideCache(3)": 30,
+        "Client(4)": 31,
+        "Client(5)": 31,
+        "SimpleTiDB(2)": 24
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eWriteResp with payload (\u003Ckey:41, success:True, \u003E)\u0027 to \u0027Client(4)\u0027.",
+      "event": "eWriteResp",
+      "state": "Ready",
+      "payload": {
+        "key": 41,
+        "success": true
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "Client(4)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 25,
+        "LookasideCache(3)": 28,
+        "Client(4)": 31,
+        "Client(5)": 26
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eRead with payload (\u003Cclient:Client(5), key:42, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eRead",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(5)",
+        "key": 42
+      },
+      "clock": {
+        "LookasideCache(3)": 32,
+        "Client(4)": 26,
+        "Client(5)": 36,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "LookasideCache(3) announced event eMonitorCacheHit with payload \u003Ckey:42, value:0, podId:0, \u003E.",
+      "id": "LookasideCache(3)",
+      "event": "eMonitorCacheHit",
+      "payload": {
+        "key": 42,
+        "value": 0,
+        "podId": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 33,
+        "Client(4)": 26,
+        "Client(5)": 36,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorCacheHit with payload (\u003Ckey:42, value:0, podId:0, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorCacheHit",
+      "state": "Watching",
+      "payload": {
+        "key": 42,
+        "value": 0,
+        "podId": 0
+      },
+      "sender": "LookasideCache(3)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 12,
+        "LookasideCache(3)": 33,
+        "Client(4)": 31,
+        "Client(5)": 36,
+        "SimpleTiDB(2)": 24
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 dequeued event \u0027eWriteResp with payload (\u003Ckey:41, success:True, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "event": "eWriteResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 41,
+        "success": true
+      },
+      "clock": {
+        "Client(4)": 32,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 25
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(4) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(4)": 33,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 25
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) exits state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(4)": 34,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 25
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) enters state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(4)": 35,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 25
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 0: WRITE key=42 val=6",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 in state \u0027Ready\u0027 sent event \u0027eReadResp with payload (\u003Ckey:42, value:0, \u003E)\u0027 to \u0027Client(5)\u0027.",
+      "event": "eReadResp",
+      "state": "Ready",
+      "payload": {
+        "key": 42,
+        "value": 0
+      },
+      "sender": "LookasideCache(3)",
+      "target": "Client(5)",
+      "isTargetHalted": false,
+      "clock": {
+        "LookasideCache(3)": 34,
+        "Client(4)": 26,
+        "Client(5)": 36,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 in state \u0027Issuing\u0027 sent event \u0027eWrite with payload (\u003Cclient:Client(4), key:42, value:6, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eWrite",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(4)",
+        "key": 42,
+        "value": 6
+      },
+      "sender": "Client(4)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(4)": 36,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 25
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 dequeued event \u0027eReadResp with payload (\u003Ckey:42, value:0, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "event": "eReadResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 42,
+        "value": 0
+      },
+      "clock": {
+        "Client(5)": 37,
+        "LookasideCache(3)": 34,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(5) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 38,
+        "LookasideCache(3)": 34,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) exits state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(5)": 39,
+        "LookasideCache(3)": 34,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 40,
+        "LookasideCache(3)": 34,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 1: WRITE key=40 val=107",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 in state \u0027Issuing\u0027 sent event \u0027eWrite with payload (\u003Cclient:Client(5), key:40, value:107, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eWrite",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(5)",
+        "key": 40,
+        "value": 107
+      },
+      "sender": "Client(5)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(5)": 41,
+        "LookasideCache(3)": 34,
+        "Client(4)": 26,
+        "SimpleTiDB(2)": 22
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eWrite with payload (\u003Cclient:Client(4), key:42, value:6, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eWrite",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(4)",
+        "key": 42,
+        "value": 6
+      },
+      "clock": {
+        "SimpleTiDB(2)": 26,
+        "LookasideCache(3)": 28,
+        "Client(4)": 36,
+        "Client(5)": 26
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "SimpleTiDB(2) announced event eMonitorDbWrite with payload \u003Ckey:42, value:6, \u003E.",
+      "id": "SimpleTiDB(2)",
+      "event": "eMonitorDbWrite",
+      "payload": {
+        "key": 42,
+        "value": 6
+      },
+      "clock": {
+        "SimpleTiDB(2)": 27,
+        "LookasideCache(3)": 28,
+        "Client(4)": 36,
+        "Client(5)": 26
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorDbWrite with payload (\u003Ckey:42, value:6, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorDbWrite",
+      "state": "Watching",
+      "payload": {
+        "key": 42,
+        "value": 6
+      },
+      "sender": "SimpleTiDB(2)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 13,
+        "LookasideCache(3)": 33,
+        "Client(4)": 36,
+        "Client(5)": 36,
+        "SimpleTiDB(2)": 27
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eWriteResp with payload (\u003Ckey:42, success:True, \u003E)\u0027 to \u0027Client(4)\u0027.",
+      "event": "eWriteResp",
+      "state": "Ready",
+      "payload": {
+        "key": 42,
+        "success": true
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "Client(4)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 28,
+        "LookasideCache(3)": 28,
+        "Client(4)": 36,
+        "Client(5)": 26
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 dequeued event \u0027eWriteResp with payload (\u003Ckey:42, success:True, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "event": "eWriteResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 42,
+        "success": true
+      },
+      "clock": {
+        "Client(4)": 37,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 28
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(4) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(4)": 38,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 28
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) exits state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(4)": 39,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 28
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(4) enters state \u0027Issuing\u0027.",
+      "id": "Client(4)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(4)": 40,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 28
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 0: READ  key=40",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eWrite with payload (\u003Cclient:Client(5), key:40, value:107, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eWrite",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(5)",
+        "key": 40,
+        "value": 107
+      },
+      "clock": {
+        "SimpleTiDB(2)": 29,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "Client(5)": 41
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "SimpleTiDB(2) announced event eMonitorDbWrite with payload \u003Ckey:40, value:107, \u003E.",
+      "id": "SimpleTiDB(2)",
+      "event": "eMonitorDbWrite",
+      "payload": {
+        "key": 40,
+        "value": 107
+      },
+      "clock": {
+        "SimpleTiDB(2)": 30,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "Client(5)": 41
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorDbWrite with payload (\u003Ckey:40, value:107, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorDbWrite",
+      "state": "Watching",
+      "payload": {
+        "key": 40,
+        "value": 107
+      },
+      "sender": "SimpleTiDB(2)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 14,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "Client(5)": 41,
+        "SimpleTiDB(2)": 30
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 in state \u0027Ready\u0027 sent event \u0027eWriteResp with payload (\u003Ckey:40, success:True, \u003E)\u0027 to \u0027Client(5)\u0027.",
+      "event": "eWriteResp",
+      "state": "Ready",
+      "payload": {
+        "key": 40,
+        "success": true
+      },
+      "sender": "SimpleTiDB(2)",
+      "target": "Client(5)",
+      "isTargetHalted": false,
+      "clock": {
+        "SimpleTiDB(2)": 31,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "Client(5)": 41
+      }
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(4)\u0027 in state \u0027Issuing\u0027 sent event \u0027eRead with payload (\u003Cclient:Client(4), key:40, \u003E)\u0027 to \u0027LookasideCache(3)\u0027.",
+      "event": "eRead",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(4)",
+        "key": 40
+      },
+      "sender": "Client(4)",
+      "target": "LookasideCache(3)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(4)": 41,
+        "LookasideCache(3)": 28,
+        "Client(5)": 26,
+        "SimpleTiDB(2)": 28
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 dequeued event \u0027eWriteResp with payload (\u003Ckey:40, success:True, \u003E)\u0027 in state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "event": "eWriteResp",
+      "state": "Issuing",
+      "payload": {
+        "key": 40,
+        "success": true
+      },
+      "clock": {
+        "Client(5)": 42,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "SimpleTiDB(2)": 31
+      }
+    }
+  },
+  {
+    "type": "GotoState",
+    "details": {
+      "log": "Client(5) is transitioning from state \u0027Issuing\u0027 to state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "startState": "Issuing",
+      "endState": "Issuing",
+      "payload": "null",
+      "clock": {
+        "Client(5)": 43,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "SimpleTiDB(2)": 31
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) exits state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": false,
+      "clock": {
+        "Client(5)": 44,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "SimpleTiDB(2)": 31
+      }
+    }
+  },
+  {
+    "type": "StateTransition",
+    "details": {
+      "log": "Client(5) enters state \u0027Issuing\u0027.",
+      "id": "Client(5)",
+      "state": "Issuing",
+      "payload": "null",
+      "isEntry": true,
+      "clock": {
+        "Client(5)": 45,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "SimpleTiDB(2)": 31
+      }
+    }
+  },
+  {
+    "type": "Print",
+    "details": {
+      "log": "Client 1: WRITE key=42 val=108",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "SendEvent",
+    "details": {
+      "log": "\u0027Client(5)\u0027 in state \u0027Issuing\u0027 sent event \u0027eWrite with payload (\u003Cclient:Client(5), key:42, value:108, \u003E)\u0027 to \u0027SimpleTiDB(2)\u0027.",
+      "event": "eWrite",
+      "state": "Issuing",
+      "payload": {
+        "client": "Client(5)",
+        "key": 42,
+        "value": 108
+      },
+      "sender": "Client(5)",
+      "target": "SimpleTiDB(2)",
+      "isTargetHalted": false,
+      "clock": {
+        "Client(5)": 46,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "SimpleTiDB(2)": 31
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027SimpleTiDB(2)\u0027 dequeued event \u0027eWrite with payload (\u003Cclient:Client(5), key:42, value:108, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "SimpleTiDB(2)",
+      "event": "eWrite",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(5)",
+        "key": 42,
+        "value": 108
+      },
+      "clock": {
+        "SimpleTiDB(2)": 32,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "Client(5)": 46
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "SimpleTiDB(2) announced event eMonitorDbWrite with payload \u003Ckey:42, value:108, \u003E.",
+      "id": "SimpleTiDB(2)",
+      "event": "eMonitorDbWrite",
+      "payload": {
+        "key": 42,
+        "value": 108
+      },
+      "clock": {
+        "SimpleTiDB(2)": 33,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "Client(5)": 46
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorDbWrite with payload (\u003Ckey:42, value:108, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorDbWrite",
+      "state": "Watching",
+      "payload": {
+        "key": 42,
+        "value": 108
+      },
+      "sender": "SimpleTiDB(2)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 15,
+        "LookasideCache(3)": 34,
+        "Client(4)": 36,
+        "Client(5)": 46,
+        "SimpleTiDB(2)": 33
+      }
+    }
+  },
+  {
+    "type": "DequeueEvent",
+    "details": {
+      "log": "\u0027LookasideCache(3)\u0027 dequeued event \u0027eRead with payload (\u003Cclient:Client(4), key:40, \u003E)\u0027 in state \u0027Ready\u0027.",
+      "id": "LookasideCache(3)",
+      "event": "eRead",
+      "state": "Ready",
+      "payload": {
+        "client": "Client(4)",
+        "key": 40
+      },
+      "clock": {
+        "LookasideCache(3)": 35,
+        "Client(4)": 41,
+        "Client(5)": 36,
+        "SimpleTiDB(2)": 28
+      }
+    }
+  },
+  {
+    "type": "Announce",
+    "details": {
+      "log": "LookasideCache(3) announced event eMonitorCacheHit with payload \u003Ckey:40, value:0, podId:0, \u003E.",
+      "id": "LookasideCache(3)",
+      "event": "eMonitorCacheHit",
+      "payload": {
+        "key": 40,
+        "value": 0,
+        "podId": 0
+      },
+      "clock": {
+        "LookasideCache(3)": 36,
+        "Client(4)": 41,
+        "Client(5)": 36,
+        "SimpleTiDB(2)": 28
+      }
+    }
+  },
+  {
+    "type": "MonitorProcessEvent",
+    "details": {
+      "log": "LSISafety is processing event \u0027eMonitorCacheHit with payload (\u003Ckey:40, value:0, podId:0, \u003E)\u0027 in state \u0027Watching\u0027.",
+      "event": "eMonitorCacheHit",
+      "state": "Watching",
+      "payload": {
+        "key": 40,
+        "value": 0,
+        "podId": 0
+      },
+      "sender": "LookasideCache(3)",
+      "monitor": "LSISafety",
+      "clock": {
+        "LSISafety": 16,
+        "LookasideCache(3)": 36,
+        "Client(4)": 41,
+        "Client(5)": 46,
+        "SimpleTiDB(2)": 33
+      }
+    }
+  },
+  {
+    "type": "AssertionFailure",
+    "details": {
+      "log": "Assertion Failed: PSpec/Spec.p:18:13 LSI VIOLATION: cache 0 hit key=40 returned 0 but storage has 107",
+      "error": "Assertion Failed: PSpec/Spec.p:18:13 LSI VIOLATION: cache 0 hit key=40 returned 0 but storage has 107",
+      "payload": "null"
+    }
+  },
+  {
+    "type": "StrategyDescription",
+    "details": {
+      "log": "Found bug using \u0027random\u0027 strategy.",
+      "payload": "null",
+      "strategy": "random",
+      "strategyDescription": "random[seed \u00274233720842\u0027]"
+    }
+  }
+]

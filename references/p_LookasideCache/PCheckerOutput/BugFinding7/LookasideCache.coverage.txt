@@ -1,0 +1,67 @@
+Total event coverage: 72.7%
+===========================
+StateMachine: Client
+====================
+Event coverage: 100.0%
+
+	State: Init
+		State has no expected events, so coverage is 100%
+		Next states: Issuing
+
+	State: Issuing
+		State event coverage: 100.0%
+		Events received: eReadResp, eWriteResp
+		Events sent: eRead, eWrite
+		Previous states: Init, Issuing
+		Next states: Issuing
+
+	State: Done
+		State has no expected events, so coverage is 100%
+
+Monitor: LSISafety
+==================
+Event coverage: 100.0%
+
+	State: Watching
+		State event coverage: 100.0%
+		Events received: eMonitorCacheHit, eMonitorDbWrite
+		Previous states: Watching
+		Next states: Watching
+
+StateMachine: LookasideCache
+============================
+Event coverage: 50.0%
+
+	State: Init
+		State has no expected events, so coverage is 100%
+		Next states: Ready
+
+	State: Ready
+		State event coverage: 50.0%
+		Events received: eDbReadResp, eRead
+		Events sent: eDbRead, eReadResp, eTTLExpiry
+		Events not covered: eDbRefreshResp, eTTLExpiry
+		Previous states: Init
+
+StateMachine: SimpleTiDB
+========================
+Event coverage: 66.7%
+
+	State: Ready
+		State event coverage: 66.7%
+		Events received: eDbRead, eWrite
+		Events sent: eDbReadResp, eWriteResp
+		Events not covered: eDbRefresh
+
+StateMachine: TestDriver
+========================
+Event coverage: 100.0%
+
+	State: Init
+		State has no expected events, so coverage is 100%
+		Next states: Done
+
+	State: Done
+		State has no expected events, so coverage is 100%
+		Previous states: Init
+

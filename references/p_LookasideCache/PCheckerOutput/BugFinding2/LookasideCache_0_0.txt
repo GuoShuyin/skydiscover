@@ -1,0 +1,114 @@
+<TestLog> Running test 'tcLookasideLSI'.
+<CreateLog> PImplementation.LSISafety was created.
+<MonitorLog> PImplementation.LSISafety enters state 'Watching'.
+<CreateLog> TestDriver(1) was created by task '30'.
+<StateLog> TestDriver(1) enters state 'Init'.
+<CreateLog> SimpleTiDB(2) was created by TestDriver(1).
+<CreateLog> LookasideCache(3) was created by TestDriver(1).
+<StateLog> LookasideCache(3) enters state 'Init'.
+<GotoLog> LookasideCache(3) is transitioning from state 'Init' to state 'PImplementation.LookasideCache.Ready'.
+<StateLog> LookasideCache(3) exits state 'Init'.
+<StateLog> LookasideCache(3) enters state 'Ready'.
+<CreateLog> Client(4) was created by TestDriver(1).
+<CreateLog> Client(5) was created by TestDriver(1).
+<GotoLog> TestDriver(1) is transitioning from state 'Init' to state 'PImplementation.TestDriver.Done'.
+<StateLog> TestDriver(1) exits state 'Init'.
+<StateLog> TestDriver(1) enters state 'Done'.
+<StateLog> SimpleTiDB(2) enters state 'Ready'.
+<StateLog> Client(4) enters state 'Init'.
+<GotoLog> Client(4) is transitioning from state 'Init' to state 'PImplementation.Client.Issuing'.
+<StateLog> Client(4) exits state 'Init'.
+<StateLog> Client(4) enters state 'Issuing'.
+<RandomLog> Client(4) nondeterministically chose '0'.
+<RandomLog> Client(4) nondeterministically chose 'True'.
+<PrintLog> Client 0: READ  key=40
+<SendLog> 'Client(4)' in state 'Issuing' sent event 'eRead with payload (<client:Client(4), key:40, >)' to 'LookasideCache(3)'.
+<StateLog> Client(5) enters state 'Init'.
+<GotoLog> Client(5) is transitioning from state 'Init' to state 'PImplementation.Client.Issuing'.
+<StateLog> Client(5) exits state 'Init'.
+<StateLog> Client(5) enters state 'Issuing'.
+<RandomLog> Client(5) nondeterministically chose '1'.
+<RandomLog> Client(5) nondeterministically chose 'True'.
+<PrintLog> Client 1: READ  key=41
+<SendLog> 'Client(5)' in state 'Issuing' sent event 'eRead with payload (<client:Client(5), key:41, >)' to 'LookasideCache(3)'.
+<DequeueLog> 'LookasideCache(3)' dequeued event 'eRead with payload (<client:Client(4), key:40, >)' in state 'Ready'.
+<SendLog> 'LookasideCache(3)' in state 'Ready' sent event 'eDbRead with payload (<lc:LookasideCache(3), key:40, >)' to 'SimpleTiDB(2)'.
+<DequeueLog> 'LookasideCache(3)' dequeued event 'eRead with payload (<client:Client(5), key:41, >)' in state 'Ready'.
+<SendLog> 'LookasideCache(3)' in state 'Ready' sent event 'eDbRead with payload (<lc:LookasideCache(3), key:41, >)' to 'SimpleTiDB(2)'.
+<DequeueLog> 'SimpleTiDB(2)' dequeued event 'eDbRead with payload (<lc:LookasideCache(3), key:40, >)' in state 'Ready'.
+<SendLog> 'SimpleTiDB(2)' in state 'Ready' sent event 'eDbReadResp with payload (<key:40, value:0, >)' to 'LookasideCache(3)'.
+<DequeueLog> 'SimpleTiDB(2)' dequeued event 'eDbRead with payload (<lc:LookasideCache(3), key:41, >)' in state 'Ready'.
+<DequeueLog> 'LookasideCache(3)' dequeued event 'eDbReadResp with payload (<key:40, value:0, >)' in state 'Ready'.
+<SendLog> 'SimpleTiDB(2)' in state 'Ready' sent event 'eDbReadResp with payload (<key:41, value:0, >)' to 'LookasideCache(3)'.
+<SendLog> 'LookasideCache(3)' in state 'Ready' sent event 'eReadResp with payload (<key:40, value:0, >)' to 'Client(4)'.
+<RandomLog> LookasideCache(3) nondeterministically chose 'False'.
+<DequeueLog> 'LookasideCache(3)' dequeued event 'eDbReadResp with payload (<key:41, value:0, >)' in state 'Ready'.
+<SendLog> 'LookasideCache(3)' in state 'Ready' sent event 'eReadResp with payload (<key:41, value:0, >)' to 'Client(5)'.
+<RandomLog> LookasideCache(3) nondeterministically chose 'False'.
+<DequeueLog> 'Client(4)' dequeued event 'eReadResp with payload (<key:40, value:0, >)' in state 'Issuing'.
+<GotoLog> Client(4) is transitioning from state 'Issuing' to state 'PImplementation.Client.Issuing'.
+<StateLog> Client(4) exits state 'Issuing'.
+<StateLog> Client(4) enters state 'Issuing'.
+<RandomLog> Client(4) nondeterministically chose '1'.
+<RandomLog> Client(4) nondeterministically chose 'False'.
+<PrintLog> Client 0: WRITE key=41 val=1
+<SendLog> 'Client(4)' in state 'Issuing' sent event 'eWrite with payload (<client:Client(4), key:41, value:1, >)' to 'SimpleTiDB(2)'.
+<DequeueLog> 'SimpleTiDB(2)' dequeued event 'eWrite with payload (<client:Client(4), key:41, value:1, >)' in state 'Ready'.
+<AnnounceLog> 'SimpleTiDB(2)' announced event 'eMonitorDbWrite' with payload <key:41, value:1, >.
+<MonitorLog> LSISafety is processing event 'eMonitorDbWrite with payload (<key:41, value:1, >)' in state 'Watching'.
+<SendLog> 'SimpleTiDB(2)' in state 'Ready' sent event 'eWriteResp with payload (<key:41, success:True, >)' to 'Client(4)'.
+<DequeueLog> 'Client(4)' dequeued event 'eWriteResp with payload (<key:41, success:True, >)' in state 'Issuing'.
+<GotoLog> Client(4) is transitioning from state 'Issuing' to state 'PImplementation.Client.Issuing'.
+<StateLog> Client(4) exits state 'Issuing'.
+<StateLog> Client(4) enters state 'Issuing'.
+<RandomLog> Client(4) nondeterministically chose '0'.
+<RandomLog> Client(4) nondeterministically chose 'False'.
+<PrintLog> Client 0: WRITE key=40 val=2
+<SendLog> 'Client(4)' in state 'Issuing' sent event 'eWrite with payload (<client:Client(4), key:40, value:2, >)' to 'SimpleTiDB(2)'.
+<DequeueLog> 'SimpleTiDB(2)' dequeued event 'eWrite with payload (<client:Client(4), key:40, value:2, >)' in state 'Ready'.
+<AnnounceLog> 'SimpleTiDB(2)' announced event 'eMonitorDbWrite' with payload <key:40, value:2, >.
+<MonitorLog> LSISafety is processing event 'eMonitorDbWrite with payload (<key:40, value:2, >)' in state 'Watching'.
+<DequeueLog> 'Client(5)' dequeued event 'eReadResp with payload (<key:41, value:0, >)' in state 'Issuing'.
+<GotoLog> Client(5) is transitioning from state 'Issuing' to state 'PImplementation.Client.Issuing'.
+<StateLog> Client(5) exits state 'Issuing'.
+<StateLog> Client(5) enters state 'Issuing'.
+<RandomLog> Client(5) nondeterministically chose '0'.
+<RandomLog> Client(5) nondeterministically chose 'False'.
+<PrintLog> Client 1: WRITE key=40 val=101
+<SendLog> 'SimpleTiDB(2)' in state 'Ready' sent event 'eWriteResp with payload (<key:40, success:True, >)' to 'Client(4)'.
+<SendLog> 'Client(5)' in state 'Issuing' sent event 'eWrite with payload (<client:Client(5), key:40, value:101, >)' to 'SimpleTiDB(2)'.
+<DequeueLog> 'Client(4)' dequeued event 'eWriteResp with payload (<key:40, success:True, >)' in state 'Issuing'.
+<GotoLog> Client(4) is transitioning from state 'Issuing' to state 'PImplementation.Client.Issuing'.
+<StateLog> Client(4) exits state 'Issuing'.
+<StateLog> Client(4) enters state 'Issuing'.
+<RandomLog> Client(4) nondeterministically chose '2'.
+<RandomLog> Client(4) nondeterministically chose 'True'.
+<PrintLog> Client 0: READ  key=42
+<DequeueLog> 'SimpleTiDB(2)' dequeued event 'eWrite with payload (<client:Client(5), key:40, value:101, >)' in state 'Ready'.
+<AnnounceLog> 'SimpleTiDB(2)' announced event 'eMonitorDbWrite' with payload <key:40, value:101, >.
+<MonitorLog> LSISafety is processing event 'eMonitorDbWrite with payload (<key:40, value:101, >)' in state 'Watching'.
+<SendLog> 'SimpleTiDB(2)' in state 'Ready' sent event 'eWriteResp with payload (<key:40, success:True, >)' to 'Client(5)'.
+<DequeueLog> 'Client(5)' dequeued event 'eWriteResp with payload (<key:40, success:True, >)' in state 'Issuing'.
+<GotoLog> Client(5) is transitioning from state 'Issuing' to state 'PImplementation.Client.Issuing'.
+<StateLog> Client(5) exits state 'Issuing'.
+<StateLog> Client(5) enters state 'Issuing'.
+<RandomLog> Client(5) nondeterministically chose '1'.
+<RandomLog> Client(5) nondeterministically chose 'True'.
+<PrintLog> Client 1: READ  key=41
+<SendLog> 'Client(4)' in state 'Issuing' sent event 'eRead with payload (<client:Client(4), key:42, >)' to 'LookasideCache(3)'.
+<DequeueLog> 'LookasideCache(3)' dequeued event 'eRead with payload (<client:Client(4), key:42, >)' in state 'Ready'.
+<SendLog> 'LookasideCache(3)' in state 'Ready' sent event 'eDbRead with payload (<lc:LookasideCache(3), key:42, >)' to 'SimpleTiDB(2)'.
+<DequeueLog> 'SimpleTiDB(2)' dequeued event 'eDbRead with payload (<lc:LookasideCache(3), key:42, >)' in state 'Ready'.
+<SendLog> 'Client(5)' in state 'Issuing' sent event 'eRead with payload (<client:Client(5), key:41, >)' to 'LookasideCache(3)'.
+<DequeueLog> 'LookasideCache(3)' dequeued event 'eRead with payload (<client:Client(5), key:41, >)' in state 'Ready'.
+<AnnounceLog> 'LookasideCache(3)' announced event 'eMonitorCacheHit' with payload <key:41, value:0, podId:0, >.
+<MonitorLog> LSISafety is processing event 'eMonitorCacheHit with payload (<key:41, value:0, podId:0, >)' in state 'Watching'.
+<ErrorLog> Assertion Failed: PSpec/Spec.p:18:13 LSI VIOLATION: cache 0 hit key=41 returned 0 but storage has 1
+<StrategyLog> Found bug using 'random' strategy.
+<StrategyLog> Checking statistics:
+<StrategyLog> Found 1 bug.
+<StrategyLog> Scheduling statistics:
+<StrategyLog> Explored 2 schedules
+<StrategyLog> Explored 2 timelines
+<StrategyLog> Found 50.00% buggy schedules.
+<StrategyLog> Number of scheduling points in terminating schedules: 60 (min), 78 (avg), 97 (max).

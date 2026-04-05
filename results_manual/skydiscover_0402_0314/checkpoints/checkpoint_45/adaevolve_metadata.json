@@ -1,0 +1,232 @@
+{
+  "num_islands": 2,
+  "current_island": 1,
+  "iteration_count": 44,
+  "global_best_score": 0.8233333333333333,
+  "decay": 0.9,
+  "intensity_min": 0.15,
+  "intensity_max": 0.5,
+  "migration_interval": 15,
+  "diversity_strategy_type": "code",
+  "use_unified_archive": true,
+  "use_adaptive_search": true,
+  "use_ucb_selection": true,
+  "fixed_intensity": 0.4,
+  "adapter": {
+    "states": [
+      {
+        "accumulated_signal": 0.07059278988047982,
+        "best_score": 0.8233333333333333,
+        "improvement_count": 5,
+        "total_evaluations": 20,
+        "decay": 0.9,
+        "epsilon": 1e-08,
+        "intensity_min": 0.15,
+        "intensity_max": 0.5
+      },
+      {
+        "accumulated_signal": 0.06495393183803386,
+        "best_score": 0.8233333333333333,
+        "improvement_count": 6,
+        "total_evaluations": 20,
+        "decay": 0.9,
+        "epsilon": 1e-08,
+        "intensity_min": 0.15,
+        "intensity_max": 0.5
+      }
+    ],
+    "dimension_visits": [
+      20,
+      20
+    ],
+    "dimension_rewards": [
+      0.2518850840661306,
+      0.2468165560141084
+    ],
+    "decayed_visits": [
+      8.784233454094307,
+      8.784233454094307
+    ],
+    "global_best_score": 0.8233333333333333,
+    "ucb_exploration": 1.41,
+    "min_visits": 3,
+    "decay": 0.9,
+    "epsilon": 1e-08
+  },
+  "island_config_names": [
+    "balanced",
+    "balanced"
+  ],
+  "islands": [
+    [
+      "551a94e2-056c-4311-8cb7-03c71ee08c37",
+      "c4d1c348-1cf4-4c68-a2b1-788caba97910",
+      "6c16cb50-4e77-4881-898c-4a536b1a6b12",
+      "d582677f-a5f8-4ebf-ace3-8cc75cb28129",
+      "1eec8c2f-4da0-4424-9c0b-65686b672947",
+      "c13da012-6c53-4d99-8e63-f85010e19ab2",
+      "46d07bd3-d3da-4b1e-a38a-8933cfa9870a",
+      "a66cbbe5-6012-4228-b4cf-4fbaa01d5ca2"
+    ],
+    [
+      "ead04fc8-c22a-4c75-a976-472acebd9730",
+      "bab531ed-2b12-4ffa-8a6d-fe46d126aefe",
+      "8866f2bb-d280-4abf-bc26-e503682d37e4",
+      "290ea7fd-a4c6-4fd3-8b47-fb28a190d30b",
+      "c67e0324-480e-42fe-be91-2312aa2ce05a",
+      "ed1f5e56-46b2-4e73-a04c-6e1f06c78aab",
+      "5cb97658-0a10-43ed-85a4-f4ca50b4fa3b",
+      "568c2a60-fbad-4255-994c-b16965e38e06"
+    ]
+  ],
+  "archive_genealogies": [
+    {
+      "parents": {
+        "551a94e2-056c-4311-8cb7-03c71ee08c37": [
+          "7c470970-f76b-4720-9074-205208a22327"
+        ],
+        "c4d1c348-1cf4-4c68-a2b1-788caba97910": [
+          "551a94e2-056c-4311-8cb7-03c71ee08c37"
+        ],
+        "6c16cb50-4e77-4881-898c-4a536b1a6b12": [
+          "0fdd84d3-d637-454f-b1ab-daddff004ab9"
+        ],
+        "d582677f-a5f8-4ebf-ace3-8cc75cb28129": [
+          "0fdd84d3-d637-454f-b1ab-daddff004ab9"
+        ],
+        "1eec8c2f-4da0-4424-9c0b-65686b672947": [
+          "4fa08af6-525e-4029-bd17-8fa06d280f4d"
+        ],
+        "c13da012-6c53-4d99-8e63-f85010e19ab2": [
+          "d582677f-a5f8-4ebf-ace3-8cc75cb28129"
+        ],
+        "46d07bd3-d3da-4b1e-a38a-8933cfa9870a": [
+          "1eec8c2f-4da0-4424-9c0b-65686b672947"
+        ],
+        "a66cbbe5-6012-4228-b4cf-4fbaa01d5ca2": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ]
+      },
+      "children": {
+        "551a94e2-056c-4311-8cb7-03c71ee08c37": [
+          "c4d1c348-1cf4-4c68-a2b1-788caba97910"
+        ],
+        "d582677f-a5f8-4ebf-ace3-8cc75cb28129": [
+          "c13da012-6c53-4d99-8e63-f85010e19ab2"
+        ],
+        "1eec8c2f-4da0-4424-9c0b-65686b672947": [
+          "46d07bd3-d3da-4b1e-a38a-8933cfa9870a"
+        ],
+        "c67e0324-480e-42fe-be91-2312aa2ce05a": [
+          "a66cbbe5-6012-4228-b4cf-4fbaa01d5ca2"
+        ]
+      }
+    },
+    {
+      "parents": {
+        "ead04fc8-c22a-4c75-a976-472acebd9730": [
+          "d03f0f52-4cd1-41d2-9784-4a69b4e6bab5"
+        ],
+        "bab531ed-2b12-4ffa-8a6d-fe46d126aefe": [
+          "c4d1c348-1cf4-4c68-a2b1-788caba97910"
+        ],
+        "8866f2bb-d280-4abf-bc26-e503682d37e4": [
+          "6c16cb50-4e77-4881-898c-4a536b1a6b12"
+        ],
+        "290ea7fd-a4c6-4fd3-8b47-fb28a190d30b": [
+          "8866f2bb-d280-4abf-bc26-e503682d37e4"
+        ],
+        "c67e0324-480e-42fe-be91-2312aa2ce05a": [
+          "1eec8c2f-4da0-4424-9c0b-65686b672947"
+        ],
+        "ed1f5e56-46b2-4e73-a04c-6e1f06c78aab": [
+          "d582677f-a5f8-4ebf-ace3-8cc75cb28129"
+        ],
+        "5cb97658-0a10-43ed-85a4-f4ca50b4fa3b": [
+          "551a94e2-056c-4311-8cb7-03c71ee08c37"
+        ],
+        "568c2a60-fbad-4255-994c-b16965e38e06": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ]
+      },
+      "children": {
+        "c4d1c348-1cf4-4c68-a2b1-788caba97910": [
+          "bab531ed-2b12-4ffa-8a6d-fe46d126aefe"
+        ],
+        "6c16cb50-4e77-4881-898c-4a536b1a6b12": [
+          "8866f2bb-d280-4abf-bc26-e503682d37e4"
+        ],
+        "8866f2bb-d280-4abf-bc26-e503682d37e4": [
+          "290ea7fd-a4c6-4fd3-8b47-fb28a190d30b"
+        ],
+        "1eec8c2f-4da0-4424-9c0b-65686b672947": [
+          "c67e0324-480e-42fe-be91-2312aa2ce05a"
+        ],
+        "d582677f-a5f8-4ebf-ace3-8cc75cb28129": [
+          "ed1f5e56-46b2-4e73-a04c-6e1f06c78aab"
+        ],
+        "551a94e2-056c-4311-8cb7-03c71ee08c37": [
+          "5cb97658-0a10-43ed-85a4-f4ca50b4fa3b"
+        ],
+        "c67e0324-480e-42fe-be91-2312aa2ce05a": [
+          "568c2a60-fbad-4255-994c-b16965e38e06"
+        ]
+      }
+    }
+  ],
+  "use_dynamic_islands": true,
+  "max_islands": 5,
+  "last_spawn_iteration": -30,
+  "use_paradigm_breakthrough": true,
+  "paradigm_tracker": {
+    "window_size": 10,
+    "improvement_threshold": 0.12,
+    "max_paradigm_uses": 2,
+    "max_tried_paradigms": 10,
+    "num_paradigms_to_generate": 3,
+    "improvement_history": [
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "active_paradigms": [
+      {
+        "idea": "Primary-per-key leases with explicit revoke/ack and peer-to-peer reads from the owner",
+        "description": "Have StorageProxy act as a per-key lease manager: it grants an exclusive ownership lease to exactly one pod for a key, and changes owners only via a revoke-then-grant handshake. On CacheNode write for a non-owned key, the node requests ownership (eReqOwn); the proxy sends eRevokeOwn(key, epoch, newPodId) to the current owner and waits for eRevokedAck after the owner drains inflight writes for that key, then bumps epoch, sets ownerPod=writer, and replies eGrantOwn(key, epoch) to the requester. The owner serves reads from its local cache without any proxy round trip, but only when writeInflight[key] == 0 (so it never serves during the window after storage commit but before the write-ack updates its cache). Non-owners forward reads directly to the current owner (ePeerRead/ePeerReadResp) to avoid proxy hops; the owner must refuse peer reads while it has inflight writes for that key to preserve LSI. All writes remain write-through via the proxy and update the owner\u2019s cache on eStorageWriteResp; the proxy also broadcasts ownership changes to both pods so they maintain a compact ownerEpoch map. This preserves LSI because only the owner can mutate a key, owner never serves while a write is inflight, and ownership transfer requires revoke-ack before any new write is forwarded. Under balanced, write-heavy load, keys gravitate to their writers so most reads hit the local owner with zero proxy round trips.",
+        "what_to_optimize": "Maximize safety_score by serving only from owner with no inflight writes; maximize round_trip_efficiency by eliminating proxy hops for owner reads and peer reads; increase cache_hit_rate because owners keep hot keys locally.",
+        "cautions": "Gate owner-served reads on writeInflight[key] == 0; never grant a new owner until the old owner has acked revoke and drained writes; ensure per-sender FIFO is assumed only for each channel and do not rely on cross-destination ordering; fall back to proxy reads if peer handle is unknown or owner is busy; announce eMonitorProxy* only for storage-facing ops; keep proxy focused on sequencing/leases and queueing.",
+        "approach_type": "protocol.LeaseWithRevocation"
+      },
+      {
+        "idea": "Proxy-validated conditional reads with per-key epochs (If-Current-Since token)",
+        "description": "Introduce a lightweight validation fast-path: StorageProxy maintains a per-key monotonically increasing epoch/version that increments on each successful storage write. CacheNodes track (value, epoch) for each cached key. On a client read, the CacheNode sends a small validation request to the proxy (eValidate(key, epochSeen)) rather than a full storage read; if the proxy sees no newer epoch for that key than epochSeen and no write is currently inflight for that key, it replies OK and the pod returns its local value as a cache hit; otherwise the proxy either does a storage read and returns the value (with the latest epoch), or replies NEED_FETCH so the CacheNode issues a normal read. On write commit, the proxy returns the committed value and new epoch and can optionally push an async eEpochUpdate(key, epoch, value) to both pods to keep caches hot. This design preserves LSI because local serving is allowed only when the proxy confirms that no newer committed write exists and no write is inflight. It reduces storage traffic substantially and converts many reads to a single proxy RTT in the common no-change case, while still guaranteeing correctness.",
+        "what_to_optimize": "Maximize safety_score by deferring to storage when epochs mismatch or writes are inflight; improve round_trip_efficiency by replacing storage trips with 1-RTT validations; raise cache_hit_rate by enabling local returns when epochs are current.",
+        "cautions": "Never return OK if any inflight write exists for the key at the proxy; ensure epoch increments only on successful storage acks; include the latest epoch in all write and read responses to keep pods synchronized; avoid serving from cache on a bare local check (must validate with proxy); ensure request-ID mapping remains intact for concurrent requests.",
+        "approach_type": "protocol.ConditionalValidation"
+      },
+      {
+        "idea": "Proxy-side per-key write serialization with read combining and last-commit value cache",
+        "description": "Enhance StorageProxy\u2019s queue to serialize by key and aggressively optimize: (a) coalesce queued writes to the same key by keeping only the last value before forwarding to storage, replying failure or superseded to earlier ones; (b) combine queued reads when a read or write for the same key is inflight, fanning out a single storage response to multiple CacheNodes; and (c) cache the last committed value per key at the proxy and serve reads directly from the proxy when there are no inflight writes for that key. The CacheNodes still announce eMonitorProxyRequestIssued but often receive eStorageReadResp short-circuited by the proxy without hitting storage. Per-key inflight tracking and request IDs are already present; extend them to maintain a fanout list for readers and a replace-on-write buffer for writers. This preserves LSI because the proxy only serves from its last-commit cache when it knows there is no newer commit (i.e., no inflight writes); any ambiguity falls back to storage. It significantly reduces storage round trips and proxy-to-db congestion in write-heavy bursts and read-after-write scenarios.",
+        "what_to_optimize": "Maximize round_trip_efficiency by collapsing multiple client reads into one logical proxy operation and eliminating redundant writes; improve cache_hit_rate at the proxy-level; keep safety_score high by only serving from the proxy cache when no inflight writes exist.",
+        "cautions": "Carefully maintain per-key inflight state: do not serve from the proxy\u2019s value cache if a write is inflight; ensure coalescing does not reorder writes across keys and preserves last-writer-wins per key; deliver eMonitorProxyForward/Hold/Enqueue signals correctly for combined operations; reply deterministically to superseded writes to avoid dangling clients.",
+        "approach_type": "asyncio.Queue"
+      }
+    ],
+    "paradigm_usage_counts": {
+      "0": 1,
+      "1": 1,
+      "2": 1
+    },
+    "current_paradigm_index": 0,
+    "tried_paradigms": [],
+    "best_score_at_paradigm_gen": 0.8233333333333333,
+    "best_score_during_paradigm": 0.8233333333333333
+  }
+}

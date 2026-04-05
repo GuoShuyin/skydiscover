@@ -1,0 +1,32 @@
+{
+  "id": "bab531ed-2b12-4ffa-8a6d-fe46d126aefe",
+  "generation": 2,
+  "iteration": 12,
+  "current_iteration": 20,
+  "metrics": {
+    "idea_score": 0.7733333333333334,
+    "safety_score": 0.7433333333333334,
+    "combined_score": 0.7333333333333334,
+    "machine_interface_score": 1.0,
+    "queue_structure_score": 1.0,
+    "nondeterministic_proxy_score": 1.0,
+    "proxy_step_score": 0.0,
+    "proxy_monitor_score": 1.0,
+    "routing_signal_score": 1.0,
+    "request_id_score": 0.0,
+    "range_awareness_score": 0.0,
+    "scalability_signal_score": 0.0,
+    "key_state_score": 0.6666666666666666,
+    "cache_signal_score": 1.0,
+    "fixed_event_redeclare_count": 0.0,
+    "forbidden_machine_count": 0.0,
+    "line_count": 302.0,
+    "round_trip_efficiency": 0.8833333333333332,
+    "cache_hit_rate": 0.5,
+    "compile_success": 0.0,
+    "syntax_score": 0.0
+  },
+  "language": "p",
+  "timestamp": 1775127569.3779001,
+  "saved_at": 1775128248.2114072
+}

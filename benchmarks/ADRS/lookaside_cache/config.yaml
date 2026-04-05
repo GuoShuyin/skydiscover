@@ -1,0 +1,95 @@
+# Lookaside Cache Routing — P-style system-design search with constrained scoring
+# Usage: python -m skydiscover.cli initial_program.p evaluator.py -c config.yaml -s <strategy>
+language: text
+diff_based_generation: false
+max_iterations: 200
+checkpoint_interval: 5
+max_solution_length: 60000
+
+llm:
+  api_base: https://api.openai.com/v1
+  models:
+    - name: "gpt-5"
+      weight: 1.0
+  max_tokens: 32000
+  timeout: 600
+
+prompt:
+  system_message: |-
+    You are an expert in storage systems, workload-aware architecture, and distributed-design reasoning.
+    Your task is to rewrite the entire P-style program as a better system design.
+
+    Important:
+    - The file does NOT need to compile as real P.
+    - The output should still look like a COMPLETE P program with events, machines, comments, and a coherent end-to-end architecture, not just a tiny design snippet.
+    - The seed starts from exactly two baseline systems: `DirectReadWriteSystem` and `LookasideCacheSystem`.
+    - You may preserve, delete, merge, replace, or generalize those baseline systems.
+    - The evolved design does NOT need to contain a cache at all. It may end up using only the database, or a completely different set of devices, if that scores better.
+    - Every evolved design must still explicitly contain both a client role and a database role in the full P-style program. Everything else may change freely.
+    - The database role may itself be redesigned or replaced internally, but the program should still present a recognizable database/backing-store component.
+    - The evaluator only reads the declarative DESIGN block for scoring.
+    - Only these declarations affect score:
+      - `authoritative <name> : <role> { ... }`
+      - `device <name> : <role> { ... }`
+      - `param <name> = <value>;`
+    - The surrounding P code still matters for readability and for expressing the intended architecture, and best programs should preserve that full-program style.
+    - Any pseudo-code, helper comments, or syntax tricks outside those declarations are ignored by the evaluator score.
+
+    Core benchmark rules:
+    - Cache-like or other fast tiers must remain faster than the authoritative database.
+    - You may invent new device roles beyond cache/buffer/proxy.
+    - Unknown new devices are semantically placed on a fixed speed ladder by an evaluator-side device judge.
+    - That judge looks at the device role, doc string, and the full raw device block text.
+    - A new device is inserted between two adjacent anchor devices, and its read/write costs become the midpoint of those anchors.
+    - The total non-authoritative value-storage capacity is budgeted from `cache_capacity`; adding more devices changes the split, not the total fast memory.
+    - LSI violation is severe: if a client is served a value for key K and that served value is NOT equal to the database's value for key K at that exact moment, that read is an LSI violation and is penalized heavily.
+    - The evaluator keeps authoritative database truth itself; the design cannot redefine it.
+
+    Hard semantic constraints:
+    - Exactly one authoritative device must exist and it must use role `authoritative_db`.
+    - Any device with `serves_reads = true` must also have `stores_values = true`.
+    - Any non-authoritative device that stores full values can never be priced as `metadata_plane`.
+    - A design only changes behavior through the allowed declarations above.
+
+    Useful device fields:
+    - `doc = "human-readable description";`
+    - `stores_values = true | false;`
+    - `serves_reads = true | false;`
+    - `capacity = INF | <safe arithmetic over cache_capacity>;`
+
+    Useful params:
+    - `read_order = [dev_a, dev_b, db];`
+    - `scan_window = 16;`
+    - `hot_read_threshold = 2;`
+    - `hot_write_threshold = 2;`
+    - `promote_target = hot_cache;`
+    - `promote_min_reads = 2;`
+    - `promote_min_writes = 0;`
+    - `promote_max_scan_ratio = 0.85;`
+    - `write_stage_target = recent_stage;`
+    - `write_stage_min_writes = 2;`
+    - `write_stage_max_scan_ratio = 0.95;`
+    - `write_update_targets = [hot_cache, recent_stage];`
+    - `write_update_if_cached = [hot_cache, recent_stage];`
+    - `write_update_min_score = 3;`
+    - `write_update_max_scan_ratio = 0.85;`
+    - `write_invalidate_on_scan = [recent_stage];`
+    - `write_invalidate_scan_cutoff = 0.90;`
+    - `write_invalidate_cold_targets = [hot_cache];`
+    - `write_invalidate_cold_score = 2;`
+
+    Objective:
+    - Maximize end-to-end performance on fixed workloads with hot reads, scans, bursty writes, shifting hot sets, Zipf traffic, and multi-client conflicts.
+    - Avoid LSI violations.
+    - Prefer designs that read like strong systems ideas, not exploit-like score hacks.
+
+    Return only the full revised program text.
+
+evaluator:
+  timeout: 360
+
+monitor:
+  enabled: true
+  port: 8765
+  host: "127.0.0.1"
+  max_solution_length: 40000

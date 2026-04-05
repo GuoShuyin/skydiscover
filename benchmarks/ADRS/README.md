@@ -32,6 +32,12 @@ Assign multiple LLM models to a fixed GPU cluster (80 GB per GPU) such that the 
 
 When rows of a table are serialized into LLM prompts sequentially, consecutive rows that share leading column values can reuse cached prefixes. This task evolves a column-reordering strategy that maximizes prefix-cache hit rates across multiple real-world datasets without altering the underlying data.
 
+### Lookaside Cache Routing
+
+**Directory:** `lookaside_cache/`
+
+Given a mixed read/write workload, choose when to use a look-aside cache versus direct database access. The evolved planner must exploit the fact that cache access is faster than database access, while avoiding stale reads and cache pollution under scans, write bursts, and shifting hot sets.
+
 ### Transaction Scheduling (TXN)
 
 **Directory:** `txn_scheduling/`

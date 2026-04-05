@@ -93,7 +93,7 @@ class MonitorServer:
     Runs in a daemon thread with its own asyncio event loop.
     """
 
-    def __init__(self, host: str = "127.0.0.1", port: int = 8765, max_solution_length: int = 10000):
+    def __init__(self, host: str = "127.0.0.1", port: int = 8765, max_solution_length: int = 40000):
         self.host = host
         self.port = port
         self.max_solution_length = max_solution_length
@@ -661,10 +661,10 @@ class MonitorServer:
             delta_str = f" (delta: {'+' if d >= 0 else ''}{d:.4f})"
 
         # Truncate code for prompt efficiency
-        if len(code) > 2000:
-            code = code[:2000] + "\n... (truncated)"
-        if len(parent_solution) > 2000:
-            parent_solution = parent_solution[:2000] + "\n... (truncated)"
+        if len(code) > 12000:
+            code = code[:12000] + "\n... (truncated)"
+        if len(parent_solution) > 12000:
+            parent_solution = parent_solution[:12000] + "\n... (truncated)"
 
         is_image_mode = prog.get("image_path") is not None
 
@@ -994,8 +994,8 @@ class MonitorServer:
             pid = p.get("id", "?")
             code = self._program_solutions.get(pid, p.get("solution_snippet", ""))
             # Truncate code to keep prompt reasonable
-            if len(code) > 2000:
-                code = code[:2000] + "\n... (truncated)"
+            if len(code) > 12000:
+                code = code[:12000] + "\n... (truncated)"
             island_str = f", island={p.get('island')}" if p.get("island") is not None else ""
             parts.append(
                 f"\n--- Top Program #{i} ---\n"

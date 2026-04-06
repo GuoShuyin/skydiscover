@@ -29,6 +29,7 @@ PROFILE_STAGE2 = "stage2"
 LSI_TESTCASES = (
     "tcCandidateWarmThenWrite",
     "tcCandidateMultiClientConflict",
+    "tcCandidateDelayedWriteAfterTransfer",
 )
 
 _BLOCK_COMMENT_RE = re.compile(r"/\*.*?\*/", re.DOTALL)
@@ -40,6 +41,8 @@ CANONICAL_DIRECT_WRITE_LATENCY = 6.3
 
 INTERNAL_SEND_COST = 0.8
 CLIENT_REPLY_COST = 0.5
+CLIENT_PROXY_COST = 0.55
+DB_PROXY_COST = 0.95
 DB_READ_COST = 4.0
 DB_WRITE_COST = 5.0
 CACHE_HIT_LOCAL_COST = 0.25
@@ -167,12 +170,28 @@ def _count_all_sends(body: str, helpers: Dict[str, str], stack: tuple[str, ...] 
     return count
 
 
-def _count_local_cache_assignments(body: str) -> int:
-    return len(re.findall(r"\blocalCache\s*\[[^\]]+\]\s*=", body))
+def _count_pattern_with_helpers(
+    body: str,
+    pattern: str,
+    helpers: Dict[str, str],
+    stack: tuple[str, ...] = (),
+) -> int:
+    count = len(re.findall(pattern, body))
+    for helper_name, helper_body in helpers.items():
+        if helper_name in stack:
+            continue
+        calls = len(re.findall(rf"\b{re.escape(helper_name)}\s*\(", body))
+        if calls:
+            count += calls * _count_pattern_with_helpers(helper_body, pattern, helpers, stack + (helper_name,))
+    return count
 
 
-def _count_local_cache_invalidations(body: str) -> int:
-    return len(re.findall(r"\blocalCache\s*-\=\s*\(", body))
+def _count_local_cache_assignments(body: str, helpers: Dict[str, str]) -> int:
+    return _count_pattern_with_helpers(body, r"\blocalCache\s*\[[^\]]+\]\s*=", helpers)
+
+
+def _count_local_cache_invalidations(body: str, helpers: Dict[str, str]) -> int:
+    return _count_pattern_with_helpers(body, r"\blocalCache\s*-\=\s*\(", helpers)
 
 
 def _harmonic_mean(a: float, b: float) -> float:
@@ -210,12 +229,16 @@ def _client_latency_score(impl_paths: List[Path], target_machine: str) -> Tuple[
     db_write_reply_sends = max(1, _count_sends_to_event(db_write_body, "eWriteResp", db_helpers))
 
     direct_read_latency = (
-        direct_read_hops * INTERNAL_SEND_COST
+        CLIENT_PROXY_COST
+        + direct_read_hops * INTERNAL_SEND_COST
+        + DB_PROXY_COST
         + DB_READ_COST
         + db_read_reply_sends * CLIENT_REPLY_COST
     )
     direct_write_latency = (
-        direct_write_hops * INTERNAL_SEND_COST
+        CLIENT_PROXY_COST
+        + direct_write_hops * INTERNAL_SEND_COST
+        + DB_PROXY_COST
         + DB_WRITE_COST
         + db_write_reply_sends * CLIENT_REPLY_COST
     )
@@ -253,11 +276,7 @@ def _client_latency_score(impl_paths: List[Path], target_machine: str) -> Tuple[
     hit_total_sends = _count_all_sends(hit_branch, candidate_helpers)
     hit_response_sends = _count_sends_to_event(hit_branch, "eReadResp", candidate_helpers)
     hit_internal_sends = max(0, hit_total_sends - hit_response_sends)
-    read_hit_latency = (
-        CACHE_HIT_LOCAL_COST
-        + hit_internal_sends * INTERNAL_SEND_COST
-        + max(1, hit_response_sends) * CLIENT_REPLY_COST
-    )
+    cache_serves_reads = hit_response_sends > 0
 
     miss_outbound_db_reads = max(1, _count_sends_to_event(miss_branch, "eDbRead", candidate_helpers))
     db_read_return_sends = max(1, _count_sends_to_event(db_dbread_body, "eDbReadResp", db_helpers))
@@ -265,9 +284,11 @@ def _client_latency_score(impl_paths: List[Path], target_machine: str) -> Tuple[
     miss_client_responses = max(1, _count_sends_to_event(candidate_dbreadresp_body, "eReadResp", candidate_helpers))
     miss_refreshes = _count_sends_to_event(candidate_dbreadresp_body, "eDbRefresh", candidate_helpers)
     miss_internal_extra = max(0, miss_total_sends - miss_client_responses - miss_refreshes)
-    cache_fills = min(1, _count_local_cache_assignments(candidate_dbreadresp_body))
+    cache_fills = min(1, _count_local_cache_assignments(candidate_dbreadresp_body, candidate_helpers))
     read_miss_latency = (
-        miss_outbound_db_reads * INTERNAL_SEND_COST
+        CLIENT_PROXY_COST
+        + miss_outbound_db_reads * INTERNAL_SEND_COST
+        + miss_outbound_db_reads * DB_PROXY_COST
         + DB_READ_COST
         + db_read_return_sends * INTERNAL_SEND_COST
         + miss_internal_extra * INTERNAL_SEND_COST
@@ -275,12 +296,19 @@ def _client_latency_score(impl_paths: List[Path], target_machine: str) -> Tuple[
         + cache_fills * CACHE_FILL_COST
         + miss_refreshes * BACKGROUND_REFRESH_TAX
     )
+    read_hit_latency = (
+        CLIENT_PROXY_COST
+        + CACHE_HIT_LOCAL_COST
+        + hit_internal_sends * INTERNAL_SEND_COST
+        + hit_response_sends * CLIENT_REPLY_COST
+    ) if cache_serves_reads else read_miss_latency
 
     write_route_sends = max(1, _count_sends_to_event(candidate_write_body, "eWrite", candidate_helpers))
-    write_invalidations = min(1, _count_local_cache_invalidations(candidate_write_body))
+    write_invalidations = min(1, _count_local_cache_invalidations(candidate_write_body, candidate_helpers))
     write_updates = min(
         1,
-        _count_local_cache_assignments(candidate_write_body) + _count_local_cache_assignments(candidate_writeresp_body),
+        _count_local_cache_assignments(candidate_write_body, candidate_helpers)
+        + _count_local_cache_assignments(candidate_writeresp_body, candidate_helpers),
     )
     write_reply_via_system = _count_sends_to_event(candidate_writeresp_body, "eWriteResp", candidate_helpers) > 0
     write_response_sends = max(1, _count_sends_to_event(db_write_body, "eWriteResp", db_helpers))
@@ -288,7 +316,7 @@ def _client_latency_score(impl_paths: List[Path], target_machine: str) -> Tuple[
     write_ack_client_responses = _count_sends_to_event(candidate_writeresp_body, "eWriteResp", candidate_helpers)
     write_ack_internal_extra = max(0, write_ack_total_sends - write_ack_client_responses)
 
-    write_latency = write_route_sends * INTERNAL_SEND_COST + DB_WRITE_COST
+    write_latency = CLIENT_PROXY_COST + write_route_sends * INTERNAL_SEND_COST + DB_PROXY_COST + DB_WRITE_COST
     if write_reply_via_system:
         write_latency += write_response_sends * INTERNAL_SEND_COST
         write_latency += write_ack_internal_extra * INTERNAL_SEND_COST
@@ -301,8 +329,9 @@ def _client_latency_score(impl_paths: List[Path], target_machine: str) -> Tuple[
     guarded_write_update = bool(
         re.search(r"\bif\s*\(\s*(?:resp|req)\.key\s+in\s+localCache\s*\)", candidate_writeresp_body)
     )
-    write_allocates_cache = write_updates > 0 and not guarded_write_update and write_invalidations == 0
-    write_updates_if_cached = write_updates > 0 and guarded_write_update and write_invalidations == 0
+    cache_warms_on_miss = cache_serves_reads and cache_fills > 0
+    write_allocates_cache = cache_serves_reads and write_updates > 0 and not guarded_write_update and write_invalidations == 0
+    write_updates_if_cached = cache_serves_reads and write_updates > 0 and guarded_write_update and write_invalidations == 0
 
     read_latencies: List[float] = []
     write_latencies: List[float] = []
@@ -315,11 +344,11 @@ def _client_latency_score(impl_paths: List[Path], target_machine: str) -> Tuple[
         nonlocal read_latencies, write_latencies
         for op in ops:
             if op == "read":
-                if cached:
+                if cached and cache_serves_reads:
                     read_latencies.append(read_hit_latency)
                 else:
                     read_latencies.append(read_miss_latency)
-                    cached = True
+                    cached = cache_warms_on_miss
             else:
                 write_latencies.append(write_latency)
                 if write_invalidations:
@@ -351,6 +380,8 @@ def _client_latency_score(impl_paths: List[Path], target_machine: str) -> Tuple[
         "write_speedup_vs_canonical_direct": float(write_speedup),
         "balanced_client_speedup": float(balanced_speedup),
         "client_latency_balance_score": float(score),
+        "cache_serves_reads": float(1.0 if cache_serves_reads else 0.0),
+        "cache_warms_on_miss": float(1.0 if cache_warms_on_miss else 0.0),
         "write_invalidate_on_write": float(write_invalidations),
         "write_updates_cached_copy": float(1.0 if write_updates else 0.0),
         "write_allocates_cache": float(1.0 if write_allocates_cache else 0.0),
@@ -384,71 +415,218 @@ def _write_pproj(root: Path) -> None:
 
 
 def _write_generated_tests(root: Path, target_machine: str) -> None:
-    driver = f"""// Generated fixed harness targeting {target_machine}.
+    driver = f"""// Generated ownership-aware fixed harness targeting {target_machine}.
+
+event eProxyTick;
+event eHarnessTick;
+event eClientDoRead: (key: int);
+event eClientDoWrite: (key: int, value: int);
+event eClientReadDone: (clientId: int, key: int, value: int, podId: int);
+event eClientWriteDone: (clientId: int, key: int, success: bool, podId: int);
+type tProxyWriteReq = (client: machine, key: int, value: int, podId: int);
+
+machine AutoSharder {{
+    var pendingRevokeRequesters: map[int, machine];
+
+    start state Ready {{
+        entry {{
+            pendingRevokeRequesters = default(map[int, machine]);
+        }}
+
+        on eRequestOwnershipGrant do (req: (pod: machine, range: tKeyRange, sliceHandle: int)) {{
+            send req.pod, eOwnershipGrant, (range = req.range, sliceHandle = req.sliceHandle);
+        }}
+
+        on eRequestOwnershipRevoke do (req: (pod: machine, range: tKeyRange, sliceHandle: int, requester: machine)) {{
+            pendingRevokeRequesters[req.range.low] = req.requester;
+            send req.pod, eOwnershipRevoke, (range = req.range, sliceHandle = req.sliceHandle, ackTo = this);
+        }}
+
+        on eOwnershipRevokeAck do (resp: (range: tKeyRange, sliceHandle: int)) {{
+            var requester: machine;
+            if (resp.range.low in pendingRevokeRequesters) {{
+                requester = pendingRevokeRequesters[resp.range.low];
+                pendingRevokeRequesters -= (resp.range.low);
+                send requester, eOwnershipTransferDone, (rangeLow = resp.range.low, sliceHandle = resp.sliceHandle);
+            }}
+        }}
+    }}
+}}
+
+machine NetworkProxy {{
+    var db: machine;
+    var pendingWrites: seq[tProxyWriteReq];
+    var tickArmed: bool;
+
+    start state Ready {{
+        entry (p: (db: machine)) {{
+            db = p.db;
+            pendingWrites = default(seq[tProxyWriteReq]);
+            tickArmed = false;
+        }}
+
+        on eRead do (req: (client: machine, key: int, podId: int)) {{
+            send db, eRead, req;
+        }}
+
+        on eDbRead do (req: (lc: machine, key: int, podId: int)) {{
+            send db, eDbRead, req;
+        }}
+
+        on eDbRefresh do (req: (lc: machine, key: int, podId: int)) {{
+            send db, eDbRefresh, req;
+        }}
+
+        on eProxyControl do (req: tProxyControlReq) {{
+            send db, eProxyControl, req;
+        }}
+
+        on eWrite do (req: (client: machine, key: int, value: int, podId: int)) {{
+            pendingWrites += (sizeof(pendingWrites), req);
+            if (!tickArmed) {{
+                tickArmed = true;
+                send this, eProxyTick;
+            }}
+        }}
+
+        on eProxyTick do {{
+            var idx: int;
+            var req: tProxyWriteReq;
+            tickArmed = false;
+            if (sizeof(pendingWrites) == 0) {{
+                return;
+            }}
+
+            if ($) {{
+                idx = choose(sizeof(pendingWrites));
+                req = pendingWrites[idx];
+                pendingWrites -= (idx);
+                send db, eWrite, req;
+            }}
+
+            if (sizeof(pendingWrites) > 0 && !tickArmed) {{
+                tickArmed = true;
+                send this, eProxyTick;
+            }}
+        }}
+    }}
+}}
+
+machine ClientPod {{
+    var controller: machine;
+    var system: machine;
+    var podId: int;
+    var clientId: int;
+
+    start state Ready {{
+        entry (p: (controller: machine, system: machine, podId: int, clientId: int)) {{
+            controller = p.controller;
+            system = p.system;
+            podId = p.podId;
+            clientId = p.clientId;
+        }}
+
+        on eClientDoRead do (req: (key: int)) {{
+            send system, eRead, (client = this, key = req.key, podId = podId);
+        }}
+
+        on eClientDoWrite do (req: (key: int, value: int)) {{
+            send system, eWrite, (client = this, key = req.key, value = req.value, podId = podId);
+        }}
+
+        on eReadResp do (resp: (key: int, value: int, podId: int)) {{
+            send controller, eClientReadDone,
+                (clientId = clientId, key = resp.key, value = resp.value, podId = resp.podId);
+        }}
+
+        on eWriteResp do (resp: (key: int, success: bool, podId: int)) {{
+            send controller, eClientWriteDone,
+                (clientId = clientId, key = resp.key, success = resp.success, podId = resp.podId);
+        }}
+    }}
+}}
 
 machine CandidateWarmThenWriteDriver {{
+    var store: machine;
     var db: machine;
-    var system: machine;
+    var sharder: machine;
+    var pod0: machine;
+    var client0: machine;
 
     start state Init {{
         entry {{
-            db = new SimpleTiDB();
-            system = new {target_machine}((db = db, ));
-            send system, eRead, (client = this, key = 40, podId = 0);
+            store = new SimpleTiDB();
+            db = new NetworkProxy((db = store, ));
+            sharder = new AutoSharder();
+            pod0 = new {target_machine}((db = db, sharder = sharder, podId = 0));
+            client0 = new ClientPod((controller = this, system = pod0, podId = 0, clientId = 0));
+            send sharder, eRequestOwnershipGrant, (pod = pod0, range = (low = 40, high = 45), sliceHandle = 1);
+            send client0, eClientDoRead, (key = 40, );
             goto AwaitWarmRead;
         }}
     }}
 
     state AwaitWarmRead {{
-        on eReadResp do (resp: (key: int, value: int, podId: int)) {{
-            send system, eWrite, (client = this, key = 40, value = 11, podId = 1);
+        on eClientReadDone do (resp: (clientId: int, key: int, value: int, podId: int)) {{
+            send client0, eClientDoWrite, (key = 40, value = 11);
             goto AwaitWrite;
         }}
     }}
 
     state AwaitWrite {{
-        on eWriteResp do (resp: (key: int, success: bool, podId: int)) {{
-            send system, eRead, (client = this, key = 40, podId = 2);
+        on eClientWriteDone do (resp: (clientId: int, key: int, success: bool, podId: int)) {{
+            send client0, eClientDoRead, (key = 40, );
             goto AwaitSecondRead;
         }}
     }}
 
     state AwaitSecondRead {{
-        on eReadResp do (resp: (key: int, value: int, podId: int)) {{
+        on eClientReadDone do (resp: (clientId: int, key: int, value: int, podId: int)) {{
             goto Done;
         }}
     }}
 
     state Done {{
-        ignore eReadResp, eWriteResp;
+        ignore eClientReadDone, eClientWriteDone, eOwnershipTransferDone;
     }}
 }}
 
 machine CandidateMultiClientConflictDriver {{
+    var store: machine;
     var db: machine;
-    var system: machine;
+    var sharder: machine;
+    var pod0: machine;
+    var pod1: machine;
+    var client0: machine;
+    var client1: machine;
     var step: int;
 
     start state Init {{
         entry {{
-            db = new SimpleTiDB();
-            system = new {target_machine}((db = db, ));
+            store = new SimpleTiDB();
+            db = new NetworkProxy((db = store, ));
+            sharder = new AutoSharder();
+            pod0 = new {target_machine}((db = db, sharder = sharder, podId = 0));
+            pod1 = new {target_machine}((db = db, sharder = sharder, podId = 1));
+            client0 = new ClientPod((controller = this, system = pod0, podId = 0, clientId = 0));
+            client1 = new ClientPod((controller = this, system = pod1, podId = 1, clientId = 1));
             step = 0;
-            send system, eRead, (client = this, key = 41, podId = 0);
+            send sharder, eRequestOwnershipGrant, (pod = pod0, range = (low = 41, high = 45), sliceHandle = 1);
+            send client0, eClientDoRead, (key = 41, );
             goto Running;
         }}
     }}
 
     state Running {{
-        on eReadResp do (resp: (key: int, value: int, podId: int)) {{
+        on eClientReadDone do (resp: (clientId: int, key: int, value: int, podId: int)) {{
             if (step == 0) {{
                 step = 1;
-                send system, eWrite, (client = this, key = 41, value = 21, podId = 1);
+                send client0, eClientDoWrite, (key = 41, value = 21);
                 return;
             }}
             if (step == 2) {{
                 step = 3;
-                send system, eWrite, (client = this, key = 41, value = 22, podId = 3);
+                send client1, eClientDoWrite, (key = 41, value = 22);
                 return;
             }}
             if (step == 4) {{
@@ -458,15 +636,15 @@ machine CandidateMultiClientConflictDriver {{
             goto Done;
         }}
 
-        on eWriteResp do (resp: (key: int, success: bool, podId: int)) {{
+        on eClientWriteDone do (resp: (clientId: int, key: int, success: bool, podId: int)) {{
             if (step == 1) {{
                 step = 2;
-                send system, eRead, (client = this, key = 41, podId = 2);
+                send client1, eClientDoRead, (key = 41, );
                 return;
             }}
             if (step == 3) {{
                 step = 4;
-                send system, eRead, (client = this, key = 41, podId = 4);
+                send client0, eClientDoRead, (key = 41, );
                 return;
             }}
             goto Done;
@@ -474,18 +652,113 @@ machine CandidateMultiClientConflictDriver {{
     }}
 
     state Done {{
-        ignore eReadResp, eWriteResp;
+        ignore eClientReadDone, eClientWriteDone, eOwnershipTransferDone;
+    }}
+}}
+
+machine CandidateDelayedWriteAfterTransferDriver {{
+    var store: machine;
+    var db: machine;
+    var sharder: machine;
+    var pod0: machine;
+    var pod1: machine;
+    var client0: machine;
+    var client1: machine;
+    var warmups: int;
+    var postTransferReads: int;
+    var activeSh: int;
+
+    start state Init {{
+        entry {{
+            store = new SimpleTiDB();
+            db = new NetworkProxy((db = store, ));
+            sharder = new AutoSharder();
+            pod0 = new {target_machine}((db = db, sharder = sharder, podId = 0));
+            pod1 = new {target_machine}((db = db, sharder = sharder, podId = 1));
+            client0 = new ClientPod((controller = this, system = pod0, podId = 0, clientId = 0));
+            client1 = new ClientPod((controller = this, system = pod1, podId = 1, clientId = 1));
+            warmups = 0;
+            postTransferReads = 0;
+            activeSh = 1;
+            send sharder, eRequestOwnershipGrant, (pod = pod0, range = (low = 40, high = 45), sliceHandle = activeSh);
+            send client0, eClientDoRead, (key = 40, );
+            goto AwaitWarmRead;
+        }}
+    }}
+
+    state AwaitWarmRead {{
+        on eClientReadDone do (resp: (clientId: int, key: int, value: int, podId: int)) {{
+            send client0, eClientDoWrite, (key = 40, value = 5000);
+            send client0, eClientDoWrite, (key = 40, value = 5001);
+            send client0, eClientDoWrite, (key = 40, value = 5002);
+            send client0, eClientDoWrite, (key = 40, value = 5003);
+            send this, eHarnessTick;
+            goto Warmup;
+        }}
+    }}
+
+    state Warmup {{
+        on eHarnessTick do {{
+            warmups = warmups + 1;
+            if (warmups < 3) {{
+                send this, eHarnessTick;
+                return;
+            }}
+            send sharder, eRequestOwnershipRevoke,
+                (pod = pod0, range = (low = 40, high = 45), sliceHandle = activeSh, requester = this);
+            activeSh = 2;
+            send sharder, eRequestOwnershipGrant, (pod = pod1, range = (low = 40, high = 45), sliceHandle = activeSh);
+            goto WaitingTransfer;
+        }}
+
+        on eClientWriteDone do (resp: (clientId: int, key: int, success: bool, podId: int)) {{
+            // Ignore write completions; the proxy may delay and reorder them.
+        }}
+    }}
+
+    state WaitingTransfer {{
+        on eOwnershipTransferDone do (resp: (rangeLow: int, sliceHandle: int)) {{
+            send client1, eClientDoRead, (key = 40, );
+            goto ReadingAfterTransfer;
+        }}
+
+        on eClientWriteDone do (resp: (clientId: int, key: int, success: bool, podId: int)) {{
+            // Old-owner writes may still complete after revoke; this is intentional.
+        }}
+    }}
+
+    state ReadingAfterTransfer {{
+        on eClientReadDone do (resp: (clientId: int, key: int, value: int, podId: int)) {{
+            postTransferReads = postTransferReads + 1;
+            if (postTransferReads < 6) {{
+                send client1, eClientDoRead, (key = 40, );
+                return;
+            }}
+            goto Done;
+        }}
+
+        on eClientWriteDone do (resp: (clientId: int, key: int, success: bool, podId: int)) {{
+            // Ignore late completions from the old owner.
+        }}
+    }}
+
+    state Done {{
+        ignore eClientReadDone, eClientWriteDone, eOwnershipTransferDone;
     }}
 }}
 """
     script = """test tcCandidateWarmThenWrite [main = CandidateWarmThenWriteDriver]:
     assert LSISafety in
-    {CandidateWarmThenWriteDriver, SimpleTiDB, %s};
+    {CandidateWarmThenWriteDriver, SimpleTiDB, NetworkProxy, AutoSharder, ClientPod, %s};
 
 test tcCandidateMultiClientConflict [main = CandidateMultiClientConflictDriver]:
     assert LSISafety in
-    {CandidateMultiClientConflictDriver, SimpleTiDB, %s};
-""" % (target_machine, target_machine)
+    {CandidateMultiClientConflictDriver, SimpleTiDB, NetworkProxy, AutoSharder, ClientPod, %s};
+
+test tcCandidateDelayedWriteAfterTransfer [main = CandidateDelayedWriteAfterTransferDriver]:
+    assert LSISafety in
+    {CandidateDelayedWriteAfterTransferDriver, SimpleTiDB, NetworkProxy, AutoSharder, ClientPod, %s};
+""" % (target_machine, target_machine, target_machine)
     (root / "PTst").mkdir(parents=True, exist_ok=True)
     (root / "PTst" / "TestDriver.p").write_text(driver, encoding="utf-8")
     (root / "PTst" / "TestScript.p").write_text(script, encoding="utf-8")

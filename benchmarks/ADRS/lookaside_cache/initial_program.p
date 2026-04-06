@@ -18,6 +18,11 @@ they contain syntax errors. The evaluator scores the full P program directly:
 real `p compile`, fixed `p check` scenarios, and a client-perceived read/write
 latency score derived from the implementation's request paths. There is no
 separate design-only block.
+The fixed evaluator-owned world injects:
+- `AutoSharder`
+- `NetworkProxy`
+- `ClientPod`
+and the tests can transfer ownership across pods while delayed writes are still in flight.
 
 LSI violation rule:
 - if a client is served a value for key K that is NOT equal to the database's
@@ -32,6 +37,38 @@ event eReadResp:  (key: int, value: int, podId: int);
 event eWrite:     (client: machine, key: int, value: int, podId: int);
 event eWriteResp: (key: int, success: bool, podId: int);
 
+type tKeyRange = (low: int, high: int);
+type tProxyControlReq = (
+    caller: machine,
+    opCode: int,
+    key: int,
+    value: int,
+    podId: int,
+    range: tKeyRange,
+    sliceHandle: int,
+    arg0: int,
+    arg1: int
+);
+
+event eOwnershipGrant: (range: tKeyRange, sliceHandle: int);
+event eOwnershipRevoke: (range: tKeyRange, sliceHandle: int, ackTo: machine);
+event eOwnershipRevokeAck: (range: tKeyRange, sliceHandle: int);
+event eOwnershipTransferDone: (rangeLow: int, sliceHandle: int);
+event eRequestOwnershipGrant: (pod: machine, range: tKeyRange, sliceHandle: int);
+event eRequestOwnershipRevoke: (pod: machine, range: tKeyRange, sliceHandle: int, requester: machine);
+event eProxyControl: tProxyControlReq;
+event eProxyControlResp: (
+    opCode: int,
+    key: int,
+    value: int,
+    podId: int,
+    range: tKeyRange,
+    sliceHandle: int,
+    status: int,
+    arg0: int,
+    arg1: int
+);
+
 // Lookaside-cache internal DB events
 event eDbRead:        (lc: machine, key: int, podId: int);
 event eDbReadResp:    (key: int, value: int, podId: int);
@@ -39,9 +76,8 @@ event eDbRefresh:     (lc: machine, key: int, podId: int);
 event eDbRefreshResp: (key: int, value: int, podId: int);
 
 // Monitor events
-event eMonitorDbWrite:    (key: int, value: int);
-event eMonitorDirectRead: (key: int, value: int, podId: int);
-event eMonitorCacheHit:   (key: int, value: int, podId: int);
+event eMonitorDbWrite:   (key: int, value: int);
+event eMonitorServedRead: (key: int, value: int, podId: int);
 
 // ---------------------------------------------------------------------------
 // Authoritative database used by both baseline systems.
@@ -56,7 +92,7 @@ machine SimpleTiDB {
             if (req.key in dbStore) {
                 val = dbStore[req.key];
             }
-            announce eMonitorDirectRead, (key = req.key, value = val, podId = req.podId);
+            announce eMonitorServedRead, (key = req.key, value = val, podId = req.podId);
             send req.client, eReadResp, (key = req.key, value = val, podId = req.podId);
         }
 
@@ -83,19 +119,48 @@ machine SimpleTiDB {
             }
             send req.lc, eDbRefreshResp, (key = req.key, value = val3, podId = req.podId);
         }
+
+        on eProxyControl do (req: tProxyControlReq) {
+            // Default extensibility tunnel for DB-facing control-plane operations.
+            // Evolved designs can interpret opCode/args to model guard installs,
+            // epoch changes, split hints, or other storage metadata actions.
+            send req.caller, eProxyControlResp,
+                (
+                    opCode = req.opCode,
+                    key = req.key,
+                    value = req.value,
+                    podId = req.podId,
+                    range = req.range,
+                    sliceHandle = req.sliceHandle,
+                    status = 0,
+                    arg0 = req.arg0,
+                    arg1 = req.arg1
+                );
+        }
     }
 }
 
 // ---------------------------------------------------------------------------
-// Baseline system 1: direct reads and writes against TiDB.
-// This follows references/p_DirectTiDB/PSrc/Machines.p.
+// Baseline system 1: direct reads and writes against the backing store.
+// In the ownership-aware benchmark this system still runs per-pod and receives
+// grant/revoke messages, but it does not try to optimize around them.
 // ---------------------------------------------------------------------------
 machine DirectReadWriteSystem {
     var db: machine;
+    var sharder: machine;
+    var podId: int;
+    var currentRange: tKeyRange;
+    var hasOwnership: bool;
+    var currentSliceHandle: int;
 
     start state Init {
-        entry (p: (db: machine)) {
+        entry (p: (db: machine, sharder: machine, podId: int)) {
             db = p.db;
+            sharder = p.sharder;
+            podId = p.podId;
+            currentRange = (low = 0, high = -1);
+            hasOwnership = false;
+            currentSliceHandle = 0;
             goto Ready;
         }
     }
@@ -108,11 +173,24 @@ machine DirectReadWriteSystem {
         on eWrite do (req: (client: machine, key: int, value: int, podId: int)) {
             send db, eWrite, req;
         }
+
+        on eOwnershipGrant do (req: (range: tKeyRange, sliceHandle: int)) {
+            currentRange = req.range;
+            currentSliceHandle = req.sliceHandle;
+            hasOwnership = true;
+        }
+
+        on eOwnershipRevoke do (req: (range: tKeyRange, sliceHandle: int, ackTo: machine)) {
+            currentRange = (low = 0, high = -1);
+            currentSliceHandle = 0;
+            hasOwnership = false;
+            send req.ackTo, eOwnershipRevokeAck, (range = req.range, sliceHandle = req.sliceHandle);
+        }
     }
 }
 
 // ---------------------------------------------------------------------------
-// Baseline system 2: shared look-aside cache.
+// Baseline system 2: per-pod look-aside cache.
 // Reads go through the cache first; writes bypass the cache and go straight to
 // TiDB. The cache is updated on miss and refreshed periodically, so it is only
 // eventually consistent and can serve stale data in the refresh window.
@@ -120,14 +198,24 @@ machine DirectReadWriteSystem {
 // ---------------------------------------------------------------------------
 machine LookasideCacheSystem {
     var db: machine;
+    var sharder: machine;
+    var podId: int;
     var localCache: map[int, int];
     var pendingReadClients: map[int, seq[machine]];
     var pendingReadPods: map[int, int];
     var refreshingKeys: set[int];
+    var currentRange: tKeyRange;
+    var hasOwnership: bool;
+    var currentSliceHandle: int;
 
     start state Init {
-        entry (p: (db: machine)) {
+        entry (p: (db: machine, sharder: machine, podId: int)) {
             db = p.db;
+            sharder = p.sharder;
+            podId = p.podId;
+            currentRange = (low = 0, high = -1);
+            hasOwnership = false;
+            currentSliceHandle = 0;
             goto Ready;
         }
     }
@@ -135,7 +223,7 @@ machine LookasideCacheSystem {
     state Ready {
         on eRead do (req: (client: machine, key: int, podId: int)) {
             if (req.key in localCache) {
-                announce eMonitorCacheHit, (key = req.key, value = localCache[req.key], podId = req.podId);
+                announce eMonitorServedRead, (key = req.key, value = localCache[req.key], podId = req.podId);
                 send req.client, eReadResp, (key = req.key, value = localCache[req.key], podId = req.podId);
             } else if (req.key in pendingReadClients) {
                 pendingReadClients[req.key] += (sizeof(pendingReadClients[req.key]), req.client);
@@ -160,6 +248,7 @@ machine LookasideCacheSystem {
             localCache[resp.key] = resp.value;
             i = 0;
             while (i < sizeof(pendingReadClients[resp.key])) {
+                announce eMonitorServedRead, (key = resp.key, value = resp.value, podId = pendingReadPods[resp.key]);
                 send pendingReadClients[resp.key][i], eReadResp,
                     (key = resp.key, value = resp.value, podId = pendingReadPods[resp.key]);
                 i = i + 1;
@@ -186,6 +275,20 @@ machine LookasideCacheSystem {
         on eWriteResp do (resp: (key: int, success: bool, podId: int)) {
             // No-op: with write bypass, TiDB replies directly to the client.
         }
+
+        on eOwnershipGrant do (req: (range: tKeyRange, sliceHandle: int)) {
+            currentRange = req.range;
+            currentSliceHandle = req.sliceHandle;
+            hasOwnership = true;
+        }
+
+        on eOwnershipRevoke do (req: (range: tKeyRange, sliceHandle: int, ackTo: machine)) {
+            currentRange = (low = 0, high = -1);
+            currentSliceHandle = 0;
+            hasOwnership = false;
+            // Keep cache contents in the baseline to preserve the eventual-consistency bug surface.
+            send req.ackTo, eOwnershipRevokeAck, (range = req.range, sliceHandle = req.sliceHandle);
+        }
     }
 
 }
@@ -194,12 +297,14 @@ machine Main {
     start state Boot {
         entry {
             var db: machine;
+            var sharder: machine;
             var directSystem: machine;
             var lookasideSystem: machine;
 
             db = new SimpleTiDB();
-            directSystem = new DirectReadWriteSystem((db = db, ));
-            lookasideSystem = new LookasideCacheSystem((db = db, ));
+            sharder = db;
+            directSystem = new DirectReadWriteSystem((db = db, sharder = sharder, podId = 0));
+            lookasideSystem = new LookasideCacheSystem((db = db, sharder = sharder, podId = 0));
 
             // Future evolved programs may keep, delete, or replace these two
             // baselines. The search space is not restricted to cache-based

@@ -1,0 +1,48 @@
+machine NetworkProxy {
+    var db: machine;
+    var pending: seq[tWriteReq];
+    var tickArmed: bool;
+
+    start state Ready {
+        entry (p: (db: machine)) {
+            db = p.db;
+            pending = default(seq[tWriteReq]);
+            tickArmed = false;
+        }
+
+        on eWriteReq do (req: tWriteReq) {
+            pending += (sizeof(pending), req);
+            print format("Proxy: queued writer={0} op={1} pending={2}",
+                         req.writerId, req.opId, sizeof(pending));
+            if (!tickArmed) {
+                tickArmed = true;
+                send this, eProxyTick;
+            }
+        }
+
+        on eProxyTick do {
+            var idx: int;
+            var req: tWriteReq;
+            tickArmed = false;
+            if (sizeof(pending) == 0) {
+                return;
+            }
+
+            if ($) {
+                idx = choose(sizeof(pending));
+                req = pending[idx];
+                pending -= (idx);
+                print format("Proxy: forwarding writer={0} op={1} remaining={2}",
+                             req.writerId, req.opId, sizeof(pending));
+                send db, eWriteReq, req;
+            } else {
+                print format("Proxy: congested, keeping {0} pending request(s)", sizeof(pending));
+            }
+
+            if (sizeof(pending) > 0 && !tickArmed) {
+                tickArmed = true;
+                send this, eProxyTick;
+            }
+        }
+    }
+}

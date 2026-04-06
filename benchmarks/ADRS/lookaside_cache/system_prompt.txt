@@ -14,8 +14,17 @@ Important:
 - Still preserve a recognizable client role and database/backing-store role in the full P program.
 - Keep compatibility with the fixed harness interfaces so real `p compile` / `p check` can still run:
   - machines: `SimpleTiDB`, plus at least one of `DirectReadWriteSystem` or `LookasideCacheSystem`
-  - events: `eRead`, `eReadResp`, `eWrite`, `eWriteResp`, `eDbRead`, `eDbReadResp`, `eDbRefresh`, `eDbRefreshResp`, `eMonitorDbWrite`, `eMonitorDirectRead`, `eMonitorCacheHit`
-- You may add new machines, new events, helper protocols, extra metadata, or new layers, but do not break those fixed harness signatures for whichever scored system remains.
+  - scored system constructor parameters: `(db: machine, sharder: machine, podId: int)`
+  - required events used by the fixed world: `eRead`, `eReadResp`, `eWrite`, `eWriteResp`, `eDbRead`, `eDbReadResp`, `eDbRefresh`, `eDbRefreshResp`, `eOwnershipGrant`, `eOwnershipRevoke`, `eOwnershipRevokeAck`, `eRequestOwnershipGrant`, `eRequestOwnershipRevoke`, `eOwnershipTransferDone`, `eProxyControl`, `eProxyControlResp`, `eMonitorDbWrite`, `eMonitorServedRead`
+- The evaluator injects a fixed ownership-aware environment around your system:
+  - `AutoSharder`
+  - `NetworkProxy`
+  - `ClientPod`
+- The tests perform ownership grant/revoke and include delayed writes after transfer.
+- The fixed `NetworkProxy` also exposes a generic DB-facing control tunnel through `eProxyControl` / `eProxyControlResp`.
+- If you invent extra control-plane ideas such as guard installation, epoch updates, split hints, or other DB-adjacent metadata operations, prefer routing them through `eProxyControl` rather than inventing a brand-new proxy event name that the fixed harness cannot see.
+- Keep core client data reads/writes on the normal data path events; use `eProxyControl` for additional control-plane behavior.
+- You may add new machines, new events, helper protocols, extra metadata, or new layers, but do not break those fixed scored-system interfaces for whichever scored system remains.
 
 How scoring works:
 - The evaluator runs real `p compile`.
@@ -27,13 +36,16 @@ How scoring works:
 - If both `DirectReadWriteSystem` and `LookasideCacheSystem` are present, the evaluator keeps the higher-scoring one.
 - If only one remains, that single system is the scored system.
 - The seed `LookasideCacheSystem` is intentionally eventual-consistency only: writes bypass the cache and periodic refresh can leave a stale window.
+- Ownership/locality is a first-class design dimension because the fixed tests will transfer ownership between pods.
 - There is no hidden architecture parser and no special declaration-only shortcut.
 - If you want to improve both correctness and performance, the actual P machine behavior must improve.
+- A cache-like structure only receives read-latency credit if it both warms real cached state and actually serves client reads from the cache-hit path. A "checked cache" that always falls through to DB reads does not get cache-hit credit.
 
 Core benchmark rules:
 - LSI violation is severe: if a client is served a value for key K and that served value is not equal to the database's current value for key K at that exact moment, that read is an LSI violation.
 - Strong systems ideas are preferred over prompt gaming, comment gaming, or fake “paper” descriptions.
 - Prefer real protocol changes that make stale data harmless or impossible.
+- Expect delayed writes from the old owner to arrive after a revoke/grant handoff; protocols that rely on timing assumptions will fail.
 
 P-language style references from `P_examples`:
 

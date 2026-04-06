@@ -1,11 +1,11 @@
-test tcDirectSafety [main = DirectSafetyDriver]:
+test tcCandidateWarmThenWrite [main = CandidateWarmThenWriteDriver]:
     assert LSISafety in
-    {DirectSafetyDriver, SimpleTiDB, DirectReadWriteSystem};
+    {CandidateWarmThenWriteDriver, SimpleTiDB, NetworkProxy, AutoSharder, ClientPod, LookasideCacheSystem};
 
-test tcLookasideWarmThenWrite [main = LookasideWarmThenWriteDriver]:
+test tcCandidateMultiClientConflict [main = CandidateMultiClientConflictDriver]:
     assert LSISafety in
-    {LookasideWarmThenWriteDriver, SimpleTiDB, LookasideCacheSystem};
+    {CandidateMultiClientConflictDriver, SimpleTiDB, NetworkProxy, AutoSharder, ClientPod, LookasideCacheSystem};
 
-test tcLookasideMultiClientConflict [main = LookasideMultiClientConflictDriver]:
+test tcCandidateDelayedWriteAfterTransfer [main = CandidateDelayedWriteAfterTransferDriver]:
     assert LSISafety in
-    {LookasideMultiClientConflictDriver, SimpleTiDB, LookasideCacheSystem};
+    {CandidateDelayedWriteAfterTransferDriver, SimpleTiDB, NetworkProxy, AutoSharder, ClientPod, LookasideCacheSystem};

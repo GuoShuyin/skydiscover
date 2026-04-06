@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/apple/Documents/GitHub/P/p_LookasideCache/PGenerated/PChecker/LookasideCache.csproj",
+      "projectUniqueName": "/Users/apple/Documents/GitHub/skydiscover/references/p_LookasideCache/PGenerated/PChecker/LookasideCache.csproj",
       "projectName": "LookasideCache",
-      "projectPath": "/Users/apple/Documents/GitHub/P/p_LookasideCache/PGenerated/PChecker/LookasideCache.csproj",
+      "projectPath": "/Users/apple/Documents/GitHub/skydiscover/references/p_LookasideCache/PGenerated/PChecker/LookasideCache.csproj",
       "packagesPath": "/Users/apple/.nuget/packages/",
-      "outputPath": "/Users/apple/Documents/GitHub/P/p_LookasideCache/PGenerated/PChecker/obj/",
+      "outputPath": "/Users/apple/Documents/GitHub/skydiscover/references/p_LookasideCache/PGenerated/PChecker/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/apple/.nuget/NuGet/NuGet.Config"

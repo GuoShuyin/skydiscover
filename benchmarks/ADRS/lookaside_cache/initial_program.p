@@ -12,7 +12,9 @@ But the full evolved P-style program should still contain an explicit client
 role and an explicit database/backing-store role.
 
 Future evolved programs should still look like complete P programs, even if
-they contain syntax errors. The evaluator only scores the DESIGN block.
+they contain syntax errors. The evaluator scores the full P program directly:
+real `p compile`, fixed `p check` scenarios, and a latency proxy derived from
+the implementation structure itself. There is no separate design-only block.
 
 LSI violation rule:
 - if a client is served a value for key K that is NOT equal to the database's
@@ -106,8 +108,9 @@ machine DirectReadWriteSystem {
 
 // ---------------------------------------------------------------------------
 // Baseline system 2: shared look-aside cache.
-// Reads go through the cache first; writes still go to the database.
-// This follows references/p_LookasideCache/PSrc/Machines.p.
+// Reads go through the cache first; writes are proxied through the cache and
+// committed to TiDB before any cached copy is updated.
+// This is a safe look-aside variant inspired by references/p_LookasideCache.
 // ---------------------------------------------------------------------------
 machine LookasideCacheSystem {
     var db: machine;
@@ -115,6 +118,9 @@ machine LookasideCacheSystem {
     var pendingReadClients: map[int, seq[machine]];
     var pendingReadPods: map[int, int];
     var refreshingKeys: set[int];
+    var pendingWriteClients: map[int, machine];
+    var pendingWritePods: map[int, int];
+    var pendingWriteValues: map[int, int];
 
     start state Init {
         entry (p: (db: machine)) {
@@ -139,10 +145,13 @@ machine LookasideCacheSystem {
         }
 
         on eWrite do (req: (client: machine, key: int, value: int, podId: int)) {
-            // Baseline lookaside behavior: writes go directly to TiDB.
-            // If the key is cached, this can create a stale window until the
-            // next refresh or coherence action.
-            send db, eWrite, req;
+            // Safe look-aside behavior: the cache proxies the write to TiDB and
+            // only updates a cached copy after TiDB has acknowledged the write.
+            // This preserves LSI for subsequent cache hits.
+            pendingWriteClients[req.key] = req.client;
+            pendingWritePods[req.key] = req.podId;
+            pendingWriteValues[req.key] = req.value;
+            send db, eWrite, (client = this, key = req.key, value = req.value, podId = req.podId);
         }
 
         on eDbReadResp do (resp: (key: int, value: int, podId: int)) {
@@ -174,53 +183,19 @@ machine LookasideCacheSystem {
             localCache[resp.key] = resp.value;
             refreshingKeys -= (resp.key);
         }
+
+        on eWriteResp do (resp: (key: int, success: bool, podId: int)) {
+            if (resp.key in localCache) {
+                localCache[resp.key] = pendingWriteValues[resp.key];
+            }
+            send pendingWriteClients[resp.key], eWriteResp,
+                (key = resp.key, success = resp.success, podId = pendingWritePods[resp.key]);
+            pendingWriteClients -= (resp.key);
+            pendingWritePods -= (resp.key);
+            pendingWriteValues -= (resp.key);
+        }
     }
 
-    // DESIGN-START
-
-    authoritative db : authoritative_db {
-        doc = "authoritative TiDB backing store and source of truth";
-        stores_values = true;
-        serves_reads = true;
-        capacity = INF;
-    }
-
-    device lookaside_cache : cache {
-        doc = "shared look-aside cache for hot read keys";
-        stores_values = true;
-        serves_reads = true;
-        capacity = cache_capacity;
-    }
-
-    param read_order = [lookaside_cache, db];
-    param scan_window = 16;
-    param hot_read_threshold = 2;
-    param hot_write_threshold = 2;
-
-    // Seed a safe baseline instead of the stale buggy variant:
-    // writes update the cache if the key is already cached.
-    // Future evolved designs may delete this cache entirely and use a very
-    // different architecture if that performs better.
-    param write_update_if_cached = [lookaside_cache];
-    param write_update_targets = [];
-    param write_update_min_score = 999;
-    param write_update_max_scan_ratio = 0.85;
-
-    param promote_target = lookaside_cache;
-    param promote_min_reads = 2;
-    param promote_min_writes = 0;
-    param promote_max_scan_ratio = 0.85;
-
-    param write_stage_target = "";
-    param write_stage_min_writes = 999;
-    param write_stage_max_scan_ratio = 0.95;
-
-    param write_invalidate_on_scan = [];
-    param write_invalidate_scan_cutoff = 1.0;
-    param write_invalidate_cold_targets = [];
-    param write_invalidate_cold_score = 0;
-
-    // DESIGN-END
 }
 
 machine Main {
@@ -231,8 +206,8 @@ machine Main {
             var lookasideSystem: machine;
 
             db = new SimpleTiDB();
-            directSystem = new DirectReadWriteSystem((db = db));
-            lookasideSystem = new LookasideCacheSystem((db = db));
+            directSystem = new DirectReadWriteSystem((db = db, ));
+            lookasideSystem = new LookasideCacheSystem((db = db, ));
 
             // Future evolved programs may keep, delete, or replace these two
             // baselines. The search space is not restricted to cache-based

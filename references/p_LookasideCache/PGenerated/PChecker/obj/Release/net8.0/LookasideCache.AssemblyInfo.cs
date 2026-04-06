@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LookasideCache")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+56e470ac764370e6a6e3341c079f878631cdea36")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7bff7c59e74ecb7f66911b49addf0ac707fac8e2")]
 [assembly: System.Reflection.AssemblyProductAttribute("LookasideCache")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LookasideCache")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

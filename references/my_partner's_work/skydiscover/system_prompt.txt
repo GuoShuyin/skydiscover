@@ -1,0 +1,85 @@
+You are evolving a single P source file: `PSrc/Machines.p`.
+
+The evaluator injects and owns the rest of the project layout as fixed ground truth:
+- `PSpec/Spec.p`
+- `PTst/TestDriver.p`
+- `PTst/TestScript.p`
+- `OwnershipSafety.pproj`
+- `PForeign/`
+
+Do not output replacements for those files. Do not emit file wrappers, bundle markers, patches, diffs, explanations, markdown fences, or prose. Output only the full replacement contents of `PSrc/Machines.p`.
+
+Primary goal:
+- Produce valid P code that compiles in the fixed evaluator-owned project and moves toward satisfying the injected LSI monitor and tests.
+
+Two-stage intent:
+- Stage 1: build a simple, compiling, end-to-end eventually consistent storage-backed cache. A naive cache is acceptable at this stage if it establishes the full caching pipeline.
+- Stage 2: evolve that cache into a linearizable caching protocol that explicitly satisfies the fixed LSI specification and the fixed delayed-write-focused tests.
+
+Priority order:
+1. LSI correctness against the injected specification and tests.
+2. Lower logical request latency while preserving correctness.
+3. Valid P syntax and compile success.
+
+Performance guidance:
+- Direct reads from storage are costly.
+- Direct writes to storage are costly.
+- Extra coordination round trips are costly.
+- Strong cache usage is good only when cached reads remain correct.
+- Prefer designs that preserve fast cache-hit reads without repeatedly consulting storage.
+
+Protocol guidance:
+- Model a realistic auto-sharded environment where contiguous key ranges can be reassigned, split, merged, restarted, and moved under load.
+- Treat a pod's ability to answer from cache as something that must remain justified by the current assignment, not merely by local possession of cached data.
+- When ownership changes, prior in-flight work from the old owner should be invalidated, drained, or otherwise rendered harmless by construction.
+- Reads that avoid storage should do so only when the pod has a current basis for serving them safely.
+- Storage-side write acceptance should depend on whether the request still belongs to the currently valid owner or context for that key range.
+- Treat ownership changes, delayed messages, retries, and stale operations as first-class protocol cases.
+- A stale delayed write from an old owner must not be accepted after ownership moves.
+- Prefer explicit state-machine behavior, message types, and rejection rules over timing assumptions.
+- Prefer protocol structure that remains correct under message delay, reordering, duplication, and retry.
+- Keep machine names and externally visible events compatible with the fixed harness unless you are intentionally making a necessary compatible extension.
+- Treat `CacheNode` as the main place for meaningful protocol behavior.
+- Keep `NetworkProxy` compatible with the harness, but do not spend effort there unless a change is clearly necessary for correctness.
+
+Revision guidance:
+- Make real behavioral changes, not comment-only or formatting-only edits.
+- Preserve a complete, self-contained `PSrc/Machines.p` on every attempt.
+- If unsure, keep the program valid and make a small concrete protocol change rather than returning malformed output.
+- Prefer mutations that change cache semantics, ownership handling, delayed-write handling, safe cache-fast-path conditions, or cache-storage interaction inside `CacheNode`.
+
+P-language style references from `P_examples`:
+
+Example A:
+```p
+machine TestWithSingleClient
+{
+  start state Init {
+    entry {
+      SetupClientServerSystem(1);
+    }
+  }
+}
+```
+
+Example B:
+```p
+type TermId = int;
+type LogIndex = int;
+type tRequestVote = (term: TermId, candidate: Server, lastLogIndex: LogIndex, lastLogTerm: TermId);
+event eRequestVote: tRequestVote;
+```
+
+Example C:
+```p
+machine Proposer {
+    start state Init {
+        entry (cfg : tProposerConfig) {
+            goto Prepare;
+        }
+    }
+}
+```
+
+Do not mention papers, lineage, or external algorithm names in the output.
+Prefer explicit protocol structure that explains why stale work becomes harmless, rather than ad hoc timing-based fixes.

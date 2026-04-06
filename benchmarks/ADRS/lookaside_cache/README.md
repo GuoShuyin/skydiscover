@@ -1,10 +1,9 @@
 # Lookaside Cache Routing
 
 This benchmark now evolves a readable P-style program instead of executable
-Python. The file does not need to compile as real P, but evolved best programs
-should still look like full P programs with events, machines, and a coherent
-architecture story. The evaluator only parses the declarative `DESIGN` block
-for scoring and evaluates the resulting system design on fixed mixed workloads.
+Python. The evaluator scores the full `.p` implementation directly using the
+same overall pattern as the partner benchmark: a static latency proxy from the
+implementation, real `p compile`, and fixed `p check` validation.
 
 The design space is still inspired by two familiar baseline ideas:
 
@@ -16,48 +15,33 @@ The baseline is adapted from the reference state-machine implementations in:
 - `references/p_LookasideCache/PSrc/Machines.p`
 - `references/p_DirectTiDB/PSrc/Machines.p`
 
-But the search target is now a constrained design DSL embedded inside a full
-P-like program, not arbitrary runtime code. Only these declarations affect
-score:
+There is no separate design DSL, no declaration-only scoring shortcut, and no
+hidden parsed sidecar. The full `.p` file is the single source of truth.
+SkyDiscover edits that full program with targeted SEARCH/REPLACE diffs, and
+any performance or safety improvement must be reflected in the real P code.
 
-- `authoritative <name> : <role> { ... }`
-- `device <name> : <role> { ... }`
-- `param <name> = <value>;`
+No particular device name or topology pattern is preferred. Labels such as
+`cache`, `buffer`, `stage`, `replica`, `proxy`, `local`, `shared`, `remote`,
+`hot`, or `warm` are only descriptive text. The search is free to use very
+different names or structures if they score better.
 
-This keeps the benchmark readable and sharply reduces Python-level exploit
-surface. You can still invent new devices, change the storage topology, and
-alter routing policy through the declared parameters.
-
-The evaluator simulates the workload with evaluator-controlled canonical
-pricing. It keeps an ordered ladder of known device archetypes with fixed
-read/write costs. Known roles map directly to those anchors, and newly invented
-devices can be inserted between neighboring anchors by an evaluator-side device
-judge. That judge looks at the declared role, doc string, and full raw device
-block text. When a new device is inserted between two anchors, its charged read
-and write costs are the midpoint of the two neighboring anchors.
-
-The evaluator also enforces a total non-authoritative value-storage capacity
-budget derived from `cache_capacity`, so adding extra devices changes how
-capacity is split rather than creating free memory. The authoritative database
-truth is maintained by the evaluator itself for LSI checking. This means the
-candidate design cannot redefine correctness through custom code.
-
-It also tracks explicit `LSI violation` events. If a client read is served with
-a value different from the current database value for that key at that moment,
-the evaluator records an LSI violation and applies an extra score penalty.
-Several scenarios are multi-client and conflict-heavy to stress this behavior.
-If `OPENAI_API_KEY` is set, the evaluator can use an LLM to place unknown
-devices into the anchor ladder from their declared semantics; otherwise it
-falls back to deterministic heuristics. The AI path is restricted by hard
-semantic guardrails, so value-serving devices cannot be mispriced as pure
-metadata planes.
+Performance is approximated structurally rather than by a separate simulator:
+the evaluator rewards implementations with fewer sends, fewer storage-like
+hops, and fewer extra coordination rounds. Correctness is enforced by fixed
+PChecker scenarios. If a client is served a value different from the current
+database value for that key at that moment, that is an LSI violation, and the
+stage2 score collapses toward zero.
 
 ## Files
 
-- `initial_program.p`: P-style design seed used by search
+- `initial_program.p`: P-style seed used by search
 - `initial_program.py`: legacy Python reference seed from the earlier benchmark version
 - `config.yaml`: SkyDiscover prompt and search config
-- `evaluator/evaluator.py`: deterministic design parser, workload generator, and scorer
+- `OwnershipSafety.pproj`: fixed temporary P project template
+- `PSpec/Spec.p`: fixed LSI oracle used by `p check`
+- `PTst/TestDriver.p`: fixed direct/lookaside adversarial drivers
+- `PTst/TestScript.p`: fixed P test suite
+- `evaluator/evaluator.py`: partner-style compile/check scorer plus latency proxy
 
 ## Run
 

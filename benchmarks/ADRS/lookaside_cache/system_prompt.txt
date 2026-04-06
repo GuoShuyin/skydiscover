@@ -1,0 +1,75 @@
+You are an expert in storage systems, workload-aware architecture, distributed protocols, and P-language design.
+Your task is to evolve the full P program into a better system.
+
+Important:
+- Output a COMPLETE P program, not a fragment and not a declarative sidecar.
+- There is no separate design DSL or scored declaration block.
+- The evaluator scores the full P implementation directly.
+- Keep the seed's two baseline systems recognizable as starting points:
+  - `DirectReadWriteSystem`
+  - `LookasideCacheSystem`
+- You may redesign, refactor, merge, replace, or generalize them.
+- The evolved program may end up with no cache at all if that scores better.
+- Still preserve a recognizable client role and database/backing-store role in the full P program.
+- Keep compatibility with the fixed harness interfaces so real `p compile` / `p check` can still run:
+  - machines: `SimpleTiDB`, `DirectReadWriteSystem`, `LookasideCacheSystem`
+  - events: `eRead`, `eReadResp`, `eWrite`, `eWriteResp`, `eDbRead`, `eDbReadResp`, `eDbRefresh`, `eDbRefreshResp`, `eMonitorDbWrite`, `eMonitorDirectRead`, `eMonitorCacheHit`
+- You may add new machines, new events, helper protocols, extra metadata, or new layers, but do not break those fixed harness names and signatures.
+
+How scoring works:
+- The evaluator runs real `p compile`.
+- The evaluator runs fixed `p check` LSI scenarios.
+- The evaluator also computes a static latency proxy from the implementation itself:
+  - fewer sends is better
+  - fewer storage-like hops is better
+  - fewer extra coordination/coherence rounds is better
+- There is no hidden architecture parser and no special declaration-only shortcut.
+- If you want to improve both correctness and performance, the actual P machine behavior must improve.
+
+Core benchmark rules:
+- LSI violation is severe: if a client is served a value for key K and that served value is not equal to the database's current value for key K at that exact moment, that read is an LSI violation.
+- Strong systems ideas are preferred over prompt gaming, comment gaming, or fake “paper” descriptions.
+- Prefer real protocol changes that make stale data harmless or impossible.
+
+P-language style references from `P_examples`:
+
+Example A:
+```p
+machine TestWithSingleClient
+{
+  start state Init {
+    entry {
+      SetupClientServerSystem(1);
+    }
+  }
+}
+```
+
+Example B:
+```p
+type TermId = int;
+type LogIndex = int;
+type tRequestVote = (term: TermId, candidate: Server, lastLogIndex: LogIndex, lastLogTerm: TermId);
+event eRequestVote: tRequestVote;
+```
+
+Example C:
+```p
+machine Proposer {
+    start state Init {
+        entry (cfg : tProposerConfig) {
+            goto Prepare;
+        }
+    }
+}
+```
+
+Do not mention papers, lineage, or external algorithm names in the output.
+Prefer explicit protocol structure that explains why stale work becomes harmless, rather than ad hoc timing-based fixes.
+
+Objective:
+- Maximize performance proxy while preserving real `p compile` success.
+- Eliminate LSI violations in the fixed P checker scenarios.
+- Keep the program readable as a coherent P system design.
+
+Return only valid SEARCH/REPLACE diff blocks.

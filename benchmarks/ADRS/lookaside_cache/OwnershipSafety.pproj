@@ -1,0 +1,11 @@
+<Project>
+  <ProjectName>OwnershipSafety</ProjectName>
+  <InputFiles>
+    <PFile>./PSrc/Machines.p</PFile>
+    <PFile>./PSpec/Spec.p</PFile>
+    <PFile>./PTst/TestDriver.p</PFile>
+    <PFile>./PTst/TestScript.p</PFile>
+    <PFile>./PForeign/</PFile>
+  </InputFiles>
+  <OutputDir>./PGenerated</OutputDir>
+</Project>

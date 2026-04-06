@@ -9,20 +9,24 @@ Important:
   - `DirectReadWriteSystem`
   - `LookasideCacheSystem`
 - You may redesign, refactor, merge, replace, or generalize them.
+- The seed may keep both baseline systems, but evolved programs may keep only one scored system if that is better.
 - The evolved program may end up with no cache at all if that scores better.
 - Still preserve a recognizable client role and database/backing-store role in the full P program.
 - Keep compatibility with the fixed harness interfaces so real `p compile` / `p check` can still run:
-  - machines: `SimpleTiDB`, `DirectReadWriteSystem`, `LookasideCacheSystem`
+  - machines: `SimpleTiDB`, plus at least one of `DirectReadWriteSystem` or `LookasideCacheSystem`
   - events: `eRead`, `eReadResp`, `eWrite`, `eWriteResp`, `eDbRead`, `eDbReadResp`, `eDbRefresh`, `eDbRefreshResp`, `eMonitorDbWrite`, `eMonitorDirectRead`, `eMonitorCacheHit`
-- You may add new machines, new events, helper protocols, extra metadata, or new layers, but do not break those fixed harness names and signatures.
+- You may add new machines, new events, helper protocols, extra metadata, or new layers, but do not break those fixed harness signatures for whichever scored system remains.
 
 How scoring works:
 - The evaluator runs real `p compile`.
 - The evaluator runs fixed `p check` LSI scenarios.
-- The evaluator also computes a static latency proxy from the implementation itself:
-  - fewer sends is better
-  - fewer storage-like hops is better
-  - fewer extra coordination/coherence rounds is better
+- The evaluator also estimates client-perceived latency on fixed scenarios:
+  - average client read latency should be low
+  - average client write latency should be low
+  - read and write performance should stay balanced rather than improving only one side
+- If both `DirectReadWriteSystem` and `LookasideCacheSystem` are present, the evaluator keeps the higher-scoring one.
+- If only one remains, that single system is the scored system.
+- The seed `LookasideCacheSystem` is intentionally eventual-consistency only: writes bypass the cache and periodic refresh can leave a stale window.
 - There is no hidden architecture parser and no special declaration-only shortcut.
 - If you want to improve both correctness and performance, the actual P machine behavior must improve.
 
@@ -68,7 +72,7 @@ Do not mention papers, lineage, or external algorithm names in the output.
 Prefer explicit protocol structure that explains why stale work becomes harmless, rather than ad hoc timing-based fixes.
 
 Objective:
-- Maximize performance proxy while preserving real `p compile` success.
+- Maximize balanced client-perceived read/write performance while preserving real `p compile` success.
 - Eliminate LSI violations in the fixed P checker scenarios.
 - Keep the program readable as a coherent P system design.
 

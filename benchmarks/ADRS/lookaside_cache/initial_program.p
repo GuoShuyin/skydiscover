@@ -8,17 +8,22 @@ This seed intentionally starts from only two baseline systems:
 These are only starting points for exploration.
 Future evolved programs may keep them, delete them, merge them, or replace them.
 The best design is allowed to have no cache at all.
+The seed may contain both baseline systems, but later evolved programs may keep
+only one scored system if that one scores better.
 But the full evolved P-style program should still contain an explicit client
 role and an explicit database/backing-store role.
 
 Future evolved programs should still look like complete P programs, even if
 they contain syntax errors. The evaluator scores the full P program directly:
-real `p compile`, fixed `p check` scenarios, and a latency proxy derived from
-the implementation structure itself. There is no separate design-only block.
+real `p compile`, fixed `p check` scenarios, and a client-perceived read/write
+latency score derived from the implementation's request paths. There is no
+separate design-only block.
 
 LSI violation rule:
 - if a client is served a value for key K that is NOT equal to the database's
   current value for key K at that exact moment, that read is an LSI violation.
+- The seed look-aside baseline is intentionally only eventually consistent, so
+  it may violate LSI until evolved into a stronger protocol.
 */
 
 // Shared client/storage events
@@ -108,9 +113,10 @@ machine DirectReadWriteSystem {
 
 // ---------------------------------------------------------------------------
 // Baseline system 2: shared look-aside cache.
-// Reads go through the cache first; writes are proxied through the cache and
-// committed to TiDB before any cached copy is updated.
-// This is a safe look-aside variant inspired by references/p_LookasideCache.
+// Reads go through the cache first; writes bypass the cache and go straight to
+// TiDB. The cache is updated on miss and refreshed periodically, so it is only
+// eventually consistent and can serve stale data in the refresh window.
+// This matches the original reference-style look-aside behavior.
 // ---------------------------------------------------------------------------
 machine LookasideCacheSystem {
     var db: machine;
@@ -118,9 +124,6 @@ machine LookasideCacheSystem {
     var pendingReadClients: map[int, seq[machine]];
     var pendingReadPods: map[int, int];
     var refreshingKeys: set[int];
-    var pendingWriteClients: map[int, machine];
-    var pendingWritePods: map[int, int];
-    var pendingWriteValues: map[int, int];
 
     start state Init {
         entry (p: (db: machine)) {
@@ -145,13 +148,9 @@ machine LookasideCacheSystem {
         }
 
         on eWrite do (req: (client: machine, key: int, value: int, podId: int)) {
-            // Safe look-aside behavior: the cache proxies the write to TiDB and
-            // only updates a cached copy after TiDB has acknowledged the write.
-            // This preserves LSI for subsequent cache hits.
-            pendingWriteClients[req.key] = req.client;
-            pendingWritePods[req.key] = req.podId;
-            pendingWriteValues[req.key] = req.value;
-            send db, eWrite, (client = this, key = req.key, value = req.value, podId = req.podId);
+            // Reference look-aside behavior: writes bypass the cache entirely.
+            // Until the next refresh, a cached copy for this key may be stale.
+            send db, eWrite, req;
         }
 
         on eDbReadResp do (resp: (key: int, value: int, podId: int)) {
@@ -185,14 +184,7 @@ machine LookasideCacheSystem {
         }
 
         on eWriteResp do (resp: (key: int, success: bool, podId: int)) {
-            if (resp.key in localCache) {
-                localCache[resp.key] = pendingWriteValues[resp.key];
-            }
-            send pendingWriteClients[resp.key], eWriteResp,
-                (key = resp.key, success = resp.success, podId = pendingWritePods[resp.key]);
-            pendingWriteClients -= (resp.key);
-            pendingWritePods -= (resp.key);
-            pendingWriteValues -= (resp.key);
+            // No-op: with write bypass, TiDB replies directly to the client.
         }
     }
 
